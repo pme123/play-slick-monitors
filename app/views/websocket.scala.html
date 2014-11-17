@@ -1,0 +1,28 @@
+@(articles: List[Article])(implicit request: RequestHeader)
+
+@import helper._
+
+@moreScripts = {
+<script src="@routes.Assets.at("javascripts/websocket.js")" type="text/javascript" charset="utf-8"></script>
+}
+
+@main("Client Manager", moreScripts) {
+
+<input type="hidden" id="echo-ws-url" value="@routes.EchoWebSockets.echo().webSocketURL()"/>
+
+
+<header class="top" xmlns="http://www.w3.org/1999/html">
+
+</header>
+
+<section class="center">
+ <hr>
+
+    <article class="float-left">
+        <h4 id="WS-Dummy-Test">Websocket Echo Test</h4>
+        <h6 id="echo">No Echo yet</h6>
+    </article>
+
+</section>
+
+}

@@ -1,0 +1,25 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+GET     /server                     controllers.Application.server()
+GET     /client                     controllers.Application.client()
+GET     /client/delete/:name       controllers.Application.deleteClient(name: String)
+GET     /webSocket                  controllers.WebSockets.socket()
+# WebSocket test
+GET     /echo              controllers.EchoWebSockets.index()
+GET     /echoWebSocket              controllers.EchoWebSockets.echo()
+
+# Home page
+POST    /insertArticle              controllers.Application.insertArticle
+
+GET     /articles/all                   controllers.Application.jsonFindAllArticles
+GET     /clients/all                   controllers.Application.jsonFindAllClients
+
+# Home page
+POST    /json/insert                controllers.Application.jsonInsert
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

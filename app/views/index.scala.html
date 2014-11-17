@@ -1,0 +1,62 @@
+@(articles: List[Article], clients: List[Client])(implicit request: RequestHeader)
+
+@import helper._
+
+@moreScripts = {
+<script src="@routes.Assets.at("javascripts/playconf.js")" type="text/javascript" charset="utf-8"></script>
+}
+
+@main("Client Manager", moreScripts) {
+
+<input type="hidden" id="ws-url" value="@routes.WebSockets.socket().webSocketURL()"/>
+
+
+<header class="top" xmlns="http://www.w3.org/1999/html">
+    <article class="float-left">
+        <b>Server</b>
+    </article>
+    <article class="float-left">
+
+        <b>Articles</b>
+        <table>
+        <th>Name</th><th>Description</th>
+        @for(article <- articles) {
+        <tr>
+        <td>@article.name</td><td>@article.descr</td>
+        </tr>
+        }
+        </table>
+        <hr>
+                <form action="/insertArticle" method="POST">
+            <input name="name" type="text" placeholder="enter name of article"/>
+            <input name="descr" type="text" placeholder="enter description"/>
+            <input id="putIt" type="submit" value="Add new Article"/>
+
+        </form>
+    </article>
+        <article class="float-left">
+
+        <b>Clients</b>
+        <table>
+        <th>UUID</th>
+        @for(client <- clients) {
+        <tr>
+        <td>@client.uuid</td>
+        </tr>
+        }
+        </table>
+    </article>
+</header>
+
+<section class="center">
+ <hr>
+
+    <article class="float-left">
+        <h4 id="articleName">Dummy</h4>
+        <h6 id="articleDescr">Dummy Description</h6>
+        <p id="clientUUID">ClientUUID</p>
+    </article>
+
+</section>
+
+}
