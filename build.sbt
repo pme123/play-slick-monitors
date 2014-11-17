@@ -5,6 +5,7 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.10.4"
 
 libraryDependencies ++= Seq(
+ws,
   "org.webjars" %% "webjars-play" % "2.2.2",
   "com.typesafe.slick" %% "slick" % "2.1.0",
 "com.typesafe.play" %% "play-slick" % "0.8.0"

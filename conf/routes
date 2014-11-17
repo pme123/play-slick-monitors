@@ -8,6 +8,9 @@ GET     /server                     controllers.Application.server()
 GET     /client                     controllers.Application.client()
 GET     /client/delete/:name       controllers.Application.deleteClient(name: String)
 GET     /webSocket                  controllers.WebSockets.socket()
+# Twitter
+GET     /register                   controllers.Twitter.register()
+GET     /register_callback          controllers.Twitter.registerCallback()
 # WebSocket test
 GET     /echo              controllers.EchoWebSockets.index()
 GET     /echoWebSocket              controllers.EchoWebSockets.echo()
