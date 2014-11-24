@@ -6,20 +6,20 @@
 <script src="@routes.Assets.at("javascripts/playconf.js")" type="text/javascript" charset="utf-8"></script>
 }
 
-@main("Client Manager", moreScripts) {
+@main("Simple Signage: Client", moreScripts) {
 
 <input type="hidden" id="ws-url" value="@routes.WebSockets.socket().webSocketURL()"/>
 
 
 
 
-<section class="center">
-    <article width="320px" class="float-left">
-        <p><img width="300px" id="articleImg" src="@routes.Assets.at("images/favicon.png")"></p>
+<section  class="center">
+  <input type="hidden" id="fadeFlag" value="Fade Out"/>
+  <article width="320px" id="articleDiv">
+        <p><img width="350px" id="articleImg" class="articleImg" src="@routes.Assets.at("images/favicon.png")"></p>
     <h4 id="articleName">Dummy</h4>
         <h6 id="articleDescr">Dummy Description</h6>
         </article>
-
 </section>
   <footer class="center" xmlns="http://www.w3.org/1999/html">
         <h6 id="clientUUID">ClientUUID</h6>

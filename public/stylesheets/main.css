@@ -8,9 +8,7 @@ padding: 6px;
 padding: 12px;
 margin: 2px;
 float:left;
-   border-style: dotted;
-       border-width: 1px;
-       border-color: gray;
+
 }
 
 .center {
@@ -19,6 +17,7 @@ top: 20px;
 float:bottom;
 clear: left;
 margin: 20px;
+
 }
 
 table, th, td {
@@ -34,4 +33,49 @@ background-color: lightgray;
 
 body {
 font-family: "Apple SD Gothic Neo";
+font-size: medium;
 }
+
+/* Style for image */
+#articleDiv
+{
+     box-sizing: initial
+     padding=18px;
+    height=300px;
+    width=300px;
+    min-height=300px;
+    min-width=300px;
+        border-style: dotted;
+            border-width: 1px;
+            border-color: gray;
+
+
+    -webkit-transition: opacity 0.8s ease-in;
+    -moz-transition: opacity 0.8s ease-in;
+    -o-transition: opacity 0.8s ease-in;
+
+}
+#articleDiv.fade-out
+{
+    opacity:0;
+}
+#articleDiv.fade-in
+{
+    opacity:1;
+}
+
+.articleImg
+ {
+
+      margin=18px;
+     height=300px;
+     width=350px;
+     min-height=300px;
+     min-width=300px;
+
+
+ }
+ p,h3,h4,h5,h6 {
+ margin: 10px;
+     max-width: 350px;
+ }

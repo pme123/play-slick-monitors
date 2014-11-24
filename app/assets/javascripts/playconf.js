@@ -38,15 +38,34 @@
 
 }
   function showArticle(json) {
+
+      var fadeFlag = document.getElementById("fadeFlag")
+     fade(fadeFlag)
+     setTimeout(function (){
       var name =  document.getElementById("articleName");
       name.innerHTML =json.name;
       var descr = document.getElementById("articleDescr");
       descr.innerHTML = json.descr;
       var image = document.getElementById("articleImg")
-      image.src = json.img
+           image.src = json.img
+          fade(fadeFlag,image)
+                        }, 1000);
+
   }
 
     function showClient(json) {
        var uuid =  document.getElementById("clientUUID");
         uuid.innerHTML =json.uuid;
     }
+
+    function fade(fadeFlag) {
+           var imageDiv = document.getElementById("articleDiv")
+               if (fadeFlag.value === "Fade Out") {
+                    imageDiv.className = "fade-out";
+                    fadeFlag.value = "Fade In";
+                }
+                else {
+                    imageDiv.className = "fade-in";
+                    fadeFlag.value = "Fade Out";
+                }
+            }

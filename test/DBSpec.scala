@@ -17,17 +17,18 @@ class DBSpec extends Specification {
     "work as expected" in new WithApplication {
 
       //create an instance of the table
-      val Cats = TableQuery[Articles]
+      val articles = TableQuery[Articles]
       //see a way to architect your app in the computers-database play-slick sample
       //http://github.com/playframework/play-slick/tree/master/samples/play-slick-sample
 
       DB.withSession { implicit s: Session =>
+        articles.filterNot(_.name === "x").delete
         val testKitties = Seq(
           Article("kit", "black","img1"),
           Article("garfield", "orange","img1"),
           Article("creme puff", "grey","img1"))
-        Cats.insertAll(testKitties: _*)
-        Cats.list must equalTo(testKitties)
+        articles.insertAll(testKitties: _*)
+        articles.list must equalTo(testKitties)
       }
     }
 

@@ -18,7 +18,7 @@ class JsonApplicationSpec extends Specification {
 
     "render the index page" in new WithApplication {
 
-      val kitty = Json.obj("name" -> "Scarlett", "color" -> "Black & White")
+      val kitty = Json.obj("name" -> "Scarlett", "descr" -> "Black & White", "img" -> "img3")
       val postRequest = FakeRequest(
                   method = "POST",
                   uri = "/json/insert",
@@ -30,7 +30,7 @@ class JsonApplicationSpec extends Specification {
       val Some(result) = route(postRequest)
       status(result) must equalTo(OK)
 
-      val home = route(FakeRequest(GET, "/json/all")).get
+      val home = route(FakeRequest(GET, "/articles/all")).get
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "application/json")

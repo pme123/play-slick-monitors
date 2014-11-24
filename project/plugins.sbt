@@ -8,3 +8,5 @@ resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositor
 
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.0")
+
+addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")

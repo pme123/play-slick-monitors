@@ -6,17 +6,18 @@
 
 }
 
-@main("Client Manager", moreScripts) {
+@main("Simple Signage: Server", moreScripts) {
 
 <header class="top" xmlns="http://www.w3.org/1999/html">
-    <div class="float-left">
-        <h1>Server</h1>
-        <h4><a href="@routes.Application.server()">Reload Page.</a></h4>
-    </div>
-    <div class="float-left">
-        <a class="button blue" href="@routes.Twitter.register()">Register</a>
-        Register with your Twitter Account.
-    </div>
+    <!-- <div class="float-left">
+         <h1>Simple Signage: Server</h1>
+         <h4><a href="@routes.Application.server()">Reload Page.</a></h4>
+     </div>
+       <div class="float-left">
+           <a class="button blue" href="@routes.Twitter.register()">Register</a>
+           Register with your Twitter Account.
+       </div>
+       -->
 </header>
 <section class="center">
     <article class="float-left">
@@ -63,7 +64,7 @@
     </article>
     <article class="float-left">
 
-        <b>Clients</b>
+        <h2>Clients</h2>
         <table>
             <th>UUID</th>
             @for(client <- clients) {

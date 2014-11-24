@@ -18,7 +18,7 @@ class IntegrationSpec extends Specification {
 
         browser.goTo("http://localhost:3333/")
 
-        browser.pageSource must contain("kitty cat")
+        browser.pageSource must contain("HP Compaq")
        
       }
     }
