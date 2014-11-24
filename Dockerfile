@@ -1,6 +1,6 @@
 FROM        ubuntu:14.04
 
-MAINTAINER  Adam Alexander <adamalex@gmail.com>
+MAINTAINER  Pascal Mengelt <pascal.mengelt@webstor.ch>
 
 ENV         ACTIVATOR_VERSION 1.2.10
 ENV         DEBIAN_FRONTEND noninteractive
