@@ -1,0 +1,16 @@
+db:
+    environment:
+        POSTGRES_USER: digitalSignageUser
+        POSTGRES_PASSWORD: dbPwd
+    image: pame/db-postgres-monitors
+    ports:
+        - "5432:5432"
+web:
+    environment:
+        DB_URL: postgres://digitalSignageUser:dbPwd@192.168.59.103:5432/digitalSignageUser
+    image: pame/play-slick-monitors
+    ports:
+        - "9000:9000"
+    links:
+        - db
+
