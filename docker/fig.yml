@@ -7,11 +7,11 @@ db:
         - "5432:5432"
 web:
     environment:
-        - DB_URL=jdbc:postgres://192.168.59.103:5432/digitalSignageUser
+        - DB_URL=jdbc:postgresql://192.168.59.103:5432/digitalSignageUser
         - DB_DRIVER=org.postgresql.Driver
         - DB_USER=digitalSignageUser
         - DB_PASSWORD=dbPwd
-    image: pame/play-slick-monitors
+    build: ../
     ports:
         - "9000:9000"
     links:
