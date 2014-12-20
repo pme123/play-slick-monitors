@@ -1,0 +1,28 @@
+
+html {
+    background: #404040;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 12pt;
+    font-family: Trebuchet, sans-serif;
+}
+
+.photo-bg {
+    background-color: #FFFFF5;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+.photo-text {
+    cursor: pointer;
+    text-align: right;
+}
+
+
