@@ -9,6 +9,7 @@ object Articles extends TableQuery(new Articles(_)){
   val nameCol="name"
   val descrCol="descr"
   val imgCol="img"
+  val playCol="play"
   //create an instance of the table
   val articles = TableQuery[Articles] //see a way to architect your app in the computers-database-slick sample
 
@@ -29,7 +30,7 @@ object Articles extends TableQuery(new Articles(_)){
 
 }
 
-case class Article(name: String, descr: String, img: String)
+case class Article(name: String, descr: String, img: String, play :String)
 
 
 /* Table mapping
@@ -40,7 +41,8 @@ class Articles(tag: Tag) extends Table[Article](tag, Articles.name) {
   def name = column[String](nameCol, O.PrimaryKey)
   def descr = column[String](descrCol, O.NotNull)
   def img = column[String](imgCol, O.NotNull)
+  def play = column[String](playCol, O.NotNull)
 
-  def * = (name, descr, img) <> (Article.tupled, Article.unapply)
+  def * = (name, descr, img, play) <> (Article.tupled, Article.unapply)
 
 }

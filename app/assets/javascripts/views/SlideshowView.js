@@ -46,7 +46,7 @@ define(function (require, exports, module) {
     SlideshowView.prototype.showSlide = function (json) {
 
         var slide = new SlideView({
-            size: SlideshowView.DEFAULT_OPTIONS.size,
+            //size: SlideshowView.DEFAULT_OPTIONS.size,
             photoUrl: json.img,
             photoTitle: json.name
         });

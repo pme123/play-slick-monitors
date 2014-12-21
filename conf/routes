@@ -8,11 +8,13 @@ GET         /server                     controllers.Application.server()
 GET         /client                     controllers.Application.client()
 GET         /client/delete/:name        controllers.Application.deleteClient(name: String)
 GET         /webSocket                  controllers.WebSockets.socket()
-GET        /webSocket/:order        controllers.WebSockets.orderredSocket(order: Int)
+GET        /webSocket/:order            controllers.WebSockets.orderredSocket(order: Int)
+#GET        /webSocket/:order/:play      controllers.WebSockets.orderredPlaySocket(order: Int, play: String)
 
 # famo.us
 GET         /famous                     controllers.FamousApp.index()
 GET         /famous/:order              controllers.FamousApp.display(order: Int)
+#GET         /famous/:play/:order        controllers.FamousApp.run(order: Int, play: String)
 # Twitter
 GET         /register                   controllers.Twitter.register()
 GET         /register_callback          controllers.Twitter.registerCallback()

@@ -14,13 +14,27 @@ body {
     font-family: Trebuchet, sans-serif;
 }
 
+.film {
+    background-color: #222;
+    z-index: 1;
+    /* makes the surface invisible to clicks */
+    pointer-events: none;
+}
+
 .photo-bg {
     background-color: #FFFFF5;
     box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
     cursor: pointer;
 }
 
+.photo {
+    z-index: 2;
+    /* makes the surface invisible to clicks */
+    pointer-events: none;
+}
+
 .photo-text {
+    z-index: 2;
     cursor: pointer;
     text-align: right;
 }

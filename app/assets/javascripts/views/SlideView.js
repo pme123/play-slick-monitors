@@ -14,11 +14,12 @@ define(function (require, exports, module) {
     var Transitionable = require('famous/transitions/Transitionable');
     var SpringTransition = require('famous/transitions/SpringTransition');
 
+    var Config = require('data/Config');
+
     Transitionable.registerMethod('spring', SpringTransition);
 
     // Constructor function for our EmptyView class
     function SlideView() {
-
         // Applies View's constructor function to EmptyView class
         View.apply(this, arguments);
         this.rootModifier = new StateModifier({
@@ -42,12 +43,12 @@ define(function (require, exports, module) {
 
     // Default options for EmptyView class
     SlideView.DEFAULT_OPTIONS = {
-        size: [400, 450],
-        filmBorder: 15,
-        photoBorder: 3,
+        size: [Config.slideWidth, Config.slideHeight],
+        filmBorder: Config.filmBorder,
+        photoBorder: Config.photoBorder,
         photoUrl: undefined,
         photoTitle: undefined,
-        angle: -0.5
+        angle: Config.angle
     };
 
     function _createBackground() {
@@ -68,14 +69,9 @@ define(function (require, exports, module) {
         this.options.filmSize = this.options.size[0] - 2 * this.options.filmBorder;
 
         var film = new Surface({
-            size: [this.options.filmSize, this.options.filmSize],
-            properties: {
-                backgroundColor: '#222',
-                zIndex: 1,
-                // makes the surface invisible to clicks
-                pointerEvents: 'none'
-            }
+            size: [this.options.filmSize, this.options.filmSize]
         });
+        film.addClass("film");
 
         var filmModifier = new StateModifier({
             origin: [0.5, 0],
@@ -92,12 +88,8 @@ define(function (require, exports, module) {
         var photo = new ImageSurface({
             size: [size, size],
             content: this.options.photoUrl,
-            properties: {
-                zIndex: 2,
-                pointerEvents: 'none'
-            }
         });
-
+        photo.addClass('photo');
         this.photoModifier = new StateModifier({
             origin: [0.5, 0],
             align: [0.5, 0],
@@ -115,8 +107,7 @@ define(function (require, exports, module) {
             size: [this.options.filmSize - 2 * this.options.photoBorder, size],
             content: this.options.photoTitle,
             properties: {
-                zIndex: 2,
-                pointerEvents: 'none'
+                fontSize: Config.photoFontSize
             }
         });
         title.addClass('photo-text');

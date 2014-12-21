@@ -43,7 +43,8 @@ object Application extends Controller {
     mapping(
       Articles.nameCol -> text(),
       Articles.descrCol -> text(),
-      Articles.imgCol -> text()
+      Articles.imgCol -> text(),
+      Articles.playCol -> text()
     )(Article.apply)(Article.unapply)
   )
 

@@ -7,16 +7,20 @@ define(function (require, exports, module) {
     var Transform = require('famous/core/Transform');
     var Easing = require('famous/transitions/Easing');
 
-    var slideWidth = 0.7 * window.innerHeight;
-    var slideHeight = slideWidth + 40;
-    var slidePosition = 0;
+    var slideWidth = parseInt(0.6 * window.innerHeight);
+    var filmBorder = parseInt(slideWidth/20);
+    var slideHeight =slideWidth + 3*filmBorder;
 
     module.exports =
     {
+        photoFontSize: parseInt(slideWidth/30)+"pt",
         perspective: 1000,
         slideWidth: slideWidth,
-        slideHeight: slideHeight,
-        slidePosition: slidePosition,
+        slideHeight: slideWidth + 3*filmBorder,
+        slidePosition: 10,
+        filmBorder: filmBorder,
+        photoBorder: parseInt(filmBorder/6),
+        angle: 0.3,
         lightboxOpts: {
             inOpacity: 1,
             outOpacity: 1,

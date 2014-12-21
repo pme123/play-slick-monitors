@@ -5,6 +5,7 @@ import java.util.UUID
 import actors.EventPublisher
 import actors.messages.{CloseConnectionEvent, NewConnectionEvent}
 import akka.util.Timeout
+import conf.ApplicationConf
 import models._
 import play.api.Logger
 import play.api.libs.json.JsValue
@@ -12,15 +13,6 @@ import play.api.mvc._
 import slick.Connection
 
 object WebSockets extends Controller {
-
-
-  //JSON read/write macro
-  //  implicit val articleFormat = Json.format[Article]
-  //  implicit val clientFormat = Json.format[JsonNode]
-  //  import play.api.mvc.WebSocket.FrameFormatter
-  //
-  //  implicit val inEventFrameFormatter = FrameFormatter.jsonFrame[Article]
-  //  implicit val inEventFrameFormatter = FrameFormatter.jsonFrame[JsonNode]
 
   val ref = EventPublisher.ref
 
@@ -31,11 +23,10 @@ object WebSockets extends Controller {
   import play.api.Play.current
   import play.api.mvc._
 
-  def socket(): WebSocket[String, JsValue] = {
-    orderredSocket(0)
-  }
+  def socket(): WebSocket[String, JsValue] =   orderredSocket(0)
+  def orderredSocket(order: Int): WebSocket[String, JsValue] = orderredPlaySocket(order, ApplicationConf.DEFAULT_PLAY)
 
-  def orderredSocket(order: Int): WebSocket[String, JsValue] = {
+  def orderredPlaySocket(order: Int, play: String): WebSocket[String, JsValue] = {
     WebSocket.acceptWithActor[String, JsValue] {
       implicit request => out => WebSocketActor.props(out, order)
     }
