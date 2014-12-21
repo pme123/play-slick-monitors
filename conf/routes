@@ -8,6 +8,7 @@ GET         /server                     controllers.Application.server()
 GET         /client                     controllers.Application.client()
 GET         /client/delete/:name        controllers.Application.deleteClient(name: String)
 GET         /webSocket                  controllers.WebSockets.socket()
+GET        /webSocket/:order        controllers.WebSockets.orderredSocket(order: Int)
 
 # famo.us
 GET         /famous                     controllers.FamousApp.index()

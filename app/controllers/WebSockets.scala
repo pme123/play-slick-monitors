@@ -3,25 +3,13 @@ package controllers
 import java.util.UUID
 
 import actors.EventPublisher
-import actors.messages.{JsonClient, ClientEvent, CloseConnectionEvent, NewConnectionEvent}
+import actors.messages.{CloseConnectionEvent, NewConnectionEvent}
 import akka.util.Timeout
-import com.fasterxml.jackson.databind.JsonNode
-import com.sun.xml.internal.ws.resources.SenderMessages
-import controllers.EchoWebSockets.WebSocketActorEcho
 import models._
 import play.api.Logger
-import play.api.Play.current
-import play.api.db.slick._
 import play.api.libs.json.JsValue
 import play.api.mvc._
-import play.api._
-import play.api.db.slick.Config.driver.simple._
-import play.libs.Akka
-import play.api.Play.current
 import slick.Connection
-
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object WebSockets extends Controller {
 
@@ -40,45 +28,32 @@ object WebSockets extends Controller {
 
   implicit val timeout = Timeout(1 second)
 
-  import play.api.mvc._
   import play.api.Play.current
+  import play.api.mvc._
 
-  def socket = {
+  def socket(): WebSocket[String, JsValue] = {
+    orderredSocket(0)
+  }
+
+  def orderredSocket(order: Int): WebSocket[String, JsValue] = {
     WebSocket.acceptWithActor[String, JsValue] {
-      implicit request => out => WebSocketActor.props(out)
+      implicit request => out => WebSocketActor.props(out, order)
     }
   }
   import akka.actor._
 
-  // needed for Akka.system
-
-  //  case class Start()
-  //  case class Message(msg: String)
-  //  case class Connected(out: (Enumerator[String], Channel[String]))
-  //
-  //  class EchoActor extends Actor {
-  //    var out: (Enumerator[String], Channel[String]) = _
-  //
-  //    override def receive = {
-  //      case Start() =>
-  //        this.out = Concurrent.broadcast[String]
-  //        sender ! Connected(out)
-  //      case Message(msg) => this.out._2.push(msg)
-  //    }
-  //  }
-
   object WebSocketActor {
-    def props(out: ActorRef) = Props(new WebSocketActor(out))
+    def props(out: ActorRef, order: Int) = Props(new WebSocketActor(out, order))
   }
 
 
-  class WebSocketActor(out: ActorRef) extends Actor {
+  class WebSocketActor(out: ActorRef, order: Int) extends Actor {
 
     import models.Clients._
     import play.api.db.slick.Config.driver.simple._
 
     val uuid = UUID.randomUUID().toString
-    val client = new Client(uuid)
+    val client = new Client(uuid, order)
 
     def receive = {
       case msg: String => Logger.info("ClientEvent received: " + msg)

@@ -4,7 +4,10 @@
 # --- !Ups
 
 create table "ARTICLE" ("name" VARCHAR NOT NULL PRIMARY KEY,"descr" VARCHAR NOT NULL,"img" VARCHAR NOT NULL);
-create table "CLIENT" ("uuid" VARCHAR NOT NULL PRIMARY KEY);
+CREATE TABLE "CLIENT" (
+  "uuid"  VARCHAR NOT NULL PRIMARY KEY,
+  "order" INTEGER NOT NULL
+);
 
 # --- !Downs
 

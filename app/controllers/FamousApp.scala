@@ -12,11 +12,10 @@ object FamousApp extends Controller {
   implicit val articleFormat = Json.format[Article]
   implicit val clientFormat = Json.format[Client]
 
-  def index = DBAction { implicit request =>
-    Ok(views.html.famousclient())
-  }
+  def index = display(0)
+
 
   def display(order: Int) = DBAction { implicit request =>
-    Ok(views.html.famousclient())
+    Ok(views.html.famousclient(order))
   }
 }

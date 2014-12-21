@@ -2,12 +2,13 @@ package actors
 
 import actors.messages._
 import akka.actor.{Actor, ActorRef, Props}
+import conf.ApplicationConf._
 import models.{Article, Client}
 import play.api.Logger
-import play.api.mvc.WebSocket
 import play.libs.Akka
-import play.mvc.Results.Chunks.Out
-import play.mvc.WebSocket.In
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 object EventPublisher{
   val ref: ActorRef = Akka.system.actorOf(Props.create(classOf[EventPublisher]))
@@ -26,6 +27,7 @@ class EventPublisher() extends Actor  {
     case CloseConnectionEvent(uuid) => connections = connections - uuid
       Logger.info("Browser " + uuid + "is disconnected")
     case msg: Article => broadcastEvent(new JsonArticle(msg))
+      Logger.info("Broadcast ")
 //    case msg: Client => broadcastEvent(new JsonClient(msg))
 //    if (message.isInstanceOf[NewConnectionEvent]) {
 //      val nce: NewConnectionEvent = message.asInstanceOf[NewConnectionEvent]
@@ -44,9 +46,15 @@ class EventPublisher() extends Actor  {
   }
 
   private def broadcastEvent(message: ClientEvent) {
-    for (out <- connections.values) {
-      Logger.info("-->broadcastEvent " + message.json +" - "+out)
-      out ! message.json
+    Logger.info("-->broadcastEvent " + message.json)
+    for (client <- connections.keys) {
+      Logger.info("-->client: " + client)
+      Akka.system.scheduler.scheduleOnce(client.order * NEXTARTICLE_DELAY_INSECONDS second)(sendMsg(client))
+
+    }
+    def sendMsg(client: Client): Unit = {
+      Logger.info("-->sendMsg to" + client)
+      connections(client) ! message.json
     }
   }
 

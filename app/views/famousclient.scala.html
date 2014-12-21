@@ -1,4 +1,4 @@
-@()(implicit request: RequestHeader)
+@(order: Int)(implicit request: RequestHeader)
 
 @moreScripts = {
     <title>famo.us App</title>
@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/famous.css")' />
     <script type="text/javascript">
     require.config ( {
-    baseUrl : '  @routes.Assets.at("javascripts") '
+    baseUrl : ' @routes.Assets.at("javascripts") '
     } ) ;
     require ([ 'famous_main' ] ) ;
     </script>
@@ -31,7 +31,7 @@
 
 @main("Client Manager", moreScripts) {
 
-    <input type="hidden" id="ws-url" value="@routes.WebSockets.socket().webSocketURL()"/>
+    <input type="hidden" id="ws-url" value="@routes.WebSockets.orderredSocket(order).webSocketURL()"/>
 
     <body>
     </body>
