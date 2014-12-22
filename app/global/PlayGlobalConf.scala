@@ -13,21 +13,9 @@ import scala.concurrent.duration._
 
 object PlayGlobalConf extends GlobalSettings {
 
-  lazy val cancellable = Akka.system.scheduler.schedule(NEXTARTICLE_DELAY_INSECONDS second, NEXTARTICLE_DELAY_INSECONDS seconds)(nextArticle())
+  lazy val cancellable = Akka.system.scheduler.schedule(NEXTARTICLE_DELAY_INSECONDS second, NEXTARTICLE_DELAY_INSECONDS seconds)(EventPublisher.ref ! "go")
 
-  var lastArticle: Option[Article] = None
-  def nextArticle() = {
-    Connection.databaseObject().withSession { implicit session: Session =>
-      val articleOption: Option[Article] = Articles.nextArticle(lastArticle)
-      Logger.info("ssssss: " + NEXTARTICLE_DELAY_INSECONDS)
 
-      lastArticle = articleOption
-      for (article <- articleOption) {
-        EventPublisher.ref ! article
-      }
-    }
-
-  }
 
   override def onStart(app: Application): Unit = {
     super.onStart(app)

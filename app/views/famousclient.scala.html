@@ -1,4 +1,4 @@
-@(order: Int)(implicit request: RequestHeader)
+@(order: Int, playlist: String)(implicit request: RequestHeader)
 
 @moreScripts = {
     <title>famo.us App</title>
@@ -31,7 +31,7 @@
 
 @main("Client Manager", moreScripts) {
 
-    <input type="hidden" id="ws-url" value="@routes.WebSockets.orderredSocket(order).webSocketURL()"/>
+    <input type="hidden" id="ws-url" value="@routes.WebSockets.orderredPlaySocket(order, playlist).webSocketURL()"/>
 
     <body>
     </body>

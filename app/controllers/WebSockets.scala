@@ -26,25 +26,25 @@ object WebSockets extends Controller {
   def socket(): WebSocket[String, JsValue] =   orderredSocket(0)
   def orderredSocket(order: Int): WebSocket[String, JsValue] = orderredPlaySocket(order, ApplicationConf.DEFAULT_PLAY)
 
-  def orderredPlaySocket(order: Int, play: String): WebSocket[String, JsValue] = {
+  def orderredPlaySocket(order: Int, playlist: String): WebSocket[String, JsValue] = {
     WebSocket.acceptWithActor[String, JsValue] {
-      implicit request => out => WebSocketActor.props(out, order)
+      implicit request => out => WebSocketActor.props(out, order, playlist)
     }
   }
   import akka.actor._
 
   object WebSocketActor {
-    def props(out: ActorRef, order: Int) = Props(new WebSocketActor(out, order))
+    def props(out: ActorRef, order: Int, playlist: String) = Props(new WebSocketActor(out, order, playlist))
   }
 
 
-  class WebSocketActor(out: ActorRef, order: Int) extends Actor {
+  class WebSocketActor(out: ActorRef, order: Int, playlist: String) extends Actor {
 
     import models.Clients._
     import play.api.db.slick.Config.driver.simple._
 
     val uuid = UUID.randomUUID().toString
-    val client = new Client(uuid, order)
+    val client = new Client(uuid, order, playlist)
 
     def receive = {
       case msg: String => Logger.info("ClientEvent received: " + msg)

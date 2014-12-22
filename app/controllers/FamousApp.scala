@@ -11,7 +11,9 @@ object FamousApp extends Controller {
 
   def display(order: Int) = run(order, DEFAULT_PLAY)
 
-  def run(order: Int, play: String) = DBAction { implicit request =>
-    Ok(views.html.famousclient(order))
+  def run(order: Int, playlist: String) = DBAction { implicit request =>
+    Ok(views.html.famousclient(order, playlist))
   }
+
+
 }

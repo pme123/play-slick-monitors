@@ -44,7 +44,7 @@ object Application extends Controller {
       Articles.nameCol -> text(),
       Articles.descrCol -> text(),
       Articles.imgCol -> text(),
-      Articles.playCol -> text()
+      Articles.playlistCol -> text()
     )(Article.apply)(Article.unapply)
   )
 

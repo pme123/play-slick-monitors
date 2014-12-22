@@ -3,8 +3,8 @@
 
 # --- !Ups
 
-create table "ARTICLE" ("name" VARCHAR NOT NULL PRIMARY KEY,"descr" VARCHAR NOT NULL,"img" VARCHAR NOT NULL,"play" VARCHAR NOT NULL);
-create table "CLIENT" ("uuid" VARCHAR NOT NULL PRIMARY KEY,"order" INTEGER NOT NULL);
+create table "ARTICLE" ("name" VARCHAR NOT NULL PRIMARY KEY,"descr" VARCHAR NOT NULL,"img" VARCHAR NOT NULL,"playlist" VARCHAR NOT NULL);
+create table "CLIENT" ("uuid" VARCHAR NOT NULL PRIMARY KEY,"order" INTEGER NOT NULL,"playlist" VARCHAR NOT NULL);
 
 # --- !Downs
 
