@@ -94,7 +94,7 @@ define(function (require, exports, module) {
             origin: [0.5, 0],
             align: [0.5, 0],
             transform: Transform.translate(0, Config.filmBorder + Config.photoBorder, 0.1),
-            opacity: 0.01
+            opacity: Config.textOpacity
         });
 
         this.mainNode.add(this.photoModifier).add(photo);
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
             origin: [0.5, 0],
             align: [0.5, 0],
             transform: Transform.translate(0, this.options.filmSize + 1.5 * Config.filmBorder, 0.1),
-            opacity: 0.01
+            opacity: Config.textOpacity
         });
 
         this.mainNode.add(this.titleModifier).add(title);
@@ -124,25 +124,29 @@ define(function (require, exports, module) {
 
 
     SlideView.prototype.fadeIn = function () {
-        this.photoModifier.setOpacity(1, Config.lightboxFadeIn);
-        this.titleModifier.setOpacity(1, Config.lightboxFadeIn);
+        if(Config.textOpacity<1.0) {
+            this.photoModifier.setOpacity(1, Config.lightboxFadeIn);
+            this.titleModifier.setOpacity(1, Config.lightboxFadeIn);
+        }
         this.shake();
     };
 
     SlideView.prototype.shake = function () {
-        this.rootModifier.halt();
+        if(Config.angle>0.0) {
+            this.rootModifier.halt();
 
-        // rotates the slide view back along the top edge
-        this.rootModifier.setTransform(
-            Transform.rotateX(Config.angle),
-            Config.lightboxShakeRotate
-        );
+            // rotates the slide view back along the top edge
+            this.rootModifier.setTransform(
+                Transform.rotateX(Config.angle),
+                Config.lightboxShakeRotate
+            );
 
-        // returns the slide back to 0 degress but using a spring transition
-        this.rootModifier.setTransform(
-            Transform.identity,
-            Config.lightboxBounceRotate
-        );
+            // returns the slide back to 0 degress but using a spring transition
+            this.rootModifier.setTransform(
+                Transform.identity,
+                Config.lightboxBounceRotate
+            );
+        }
     };
 
 

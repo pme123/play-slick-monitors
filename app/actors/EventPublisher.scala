@@ -79,7 +79,7 @@ class NextArticle(playlist: String) {
     for (article <- lastArticle) {
       val json = new JsonArticle(article).json
       for (client <- connections.keys) {
-        Akka.system.scheduler.scheduleOnce(client.order * NEXTARTICLE_DELAY_INSECONDS second)(sendArticle(client, json))
+        Akka.system.scheduler.scheduleOnce(client.order * (NEXTARTICLE_DELAY_INSECONDS-NEXTARTICLE_OFFSET_INSECONDS) second)(sendArticle(client, json))
       }
     }
   }

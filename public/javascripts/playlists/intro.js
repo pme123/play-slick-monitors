@@ -12,6 +12,7 @@ define(function (require, exports, module) {
     IntroConf.prototype = new PlaylistConfig();
     IntroConf.prototype.constructor = IntroConf;
 
+    // override props
     IntroConf.prototype.photoFontSize = parseInt(PlaylistConfig.prototype.slideWidth / 15) + "pt";
 
     module.exports = IntroConf;

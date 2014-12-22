@@ -19,7 +19,7 @@ define(function (require, exports, module) {
     PlaylistConfig.prototype.photoFontSize = parseInt(slideWidth / this.photoFontSizeFactor) + "pt";
     PlaylistConfig.prototype.perspective = 1000;
     PlaylistConfig.prototype.slideHeight = slideWidth + 3 * filmBorder;
-    PlaylistConfig.prototype.slidePosition = 10;
+    PlaylistConfig.prototype.slidePosition = 0;
     PlaylistConfig.prototype.filmBorder = filmBorder;
     PlaylistConfig.prototype.photoBorder = parseInt(filmBorder / 6);
     PlaylistConfig.prototype.angle = 0.3;
@@ -30,10 +30,12 @@ define(function (require, exports, module) {
         outOrigin: [0.5, 1],
         showOrigin: [0.5, 0.5],
         inTransform: Transform.thenMove(Transform.rotateZ(0.7), [0, -slideHeight - 40, 0]),
-        outTransform: Transform.thenMove(Transform.rotateZ(0.7), [0, window.innerHeight, 0])
-        // inTransition= {duration: 650, curve: 'easeOut'},
-        //outTransition: {duration: 500, curve: Easing.inCubic}
+        outTransform: Transform.thenMove(Transform.rotateZ(0.7), [0, window.innerHeight, 0]),
+        inTransition: {duration: 650, curve: 'easeOut'},
+        outTransition: {duration: 500, curve: Easing.inCubic}
     };
+
+    PlaylistConfig.prototype.textOpacity = 0.01;
     PlaylistConfig.prototype.lightboxFadeIn = {duration: 1500, curve: 'easeIn'};
     PlaylistConfig.prototype.lightboxShakeRotate = {duration: 200, curve: 'easeOut'};
     PlaylistConfig.prototype.lightboxBounceRotate = {method: 'spring', period: 600, dampingRatio: 0.15};
