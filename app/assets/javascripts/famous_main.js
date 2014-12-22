@@ -5,29 +5,30 @@ define(function (require, exports, module) {
 
     var AppView = require('views/AppView');
 
-    var Config = require('playlists/article');
+    var PlaylistConfig;
+    var Config;
 
     var Surface = require('famous/core/Surface');
 
     var mainContext = Engine.createContext();
-    mainContext.setPerspective(Config.perspective);
     initApp();
 
     function initApp() {
         // parses out reponse data and retrieves array of urls
-        initConfig();
+        initConfig(function(){
+            mainContext.setPerspective(Config.perspective);
+            addContent();
+        });
 
     }
 
-    function initConfig() {
+    function initConfig(callback) {
         var playlist = document.getElementById("playlist");
         var url = 'playlists/' + playlist.value;
-    //    if (require.defined(url)) {
-     //       Config = require(url);
-    //    }
         require([url], function (config) {
-            Config = config;
-            addContent();
+            PlaylistConfig = config;
+            Config = new PlaylistConfig();
+            callback();
         });
     }
 
