@@ -12,11 +12,12 @@ define(function (require, exports, module) {
     var Lightbox = require('famous/views/Lightbox');
     var Easing = require('famous/transitions/Easing');
     var Timer = require('famous/utilities/Timer');
-    var Config = require('data/Config');
+    var Config;
 
 
     function SlideshowView() {
         View.apply(this, arguments);
+        Config = this.options.config;
 
         this.rootModifier = new StateModifier({
             size: this.options.size,
@@ -34,6 +35,7 @@ define(function (require, exports, module) {
 
     // Default options for EmptyView class
     SlideshowView.DEFAULT_OPTIONS = {
+        config: undefined,
         size: [450, 500]
     };
 
@@ -46,7 +48,8 @@ define(function (require, exports, module) {
     SlideshowView.prototype.showSlide = function (json) {
 
         var slide = new SlideView({
-            //size: SlideshowView.DEFAULT_OPTIONS.size,
+            size: [Config.slideWidth, Config.slideHeight],
+            config: Config,
             photoUrl: json.img,
             photoTitle: json.name
         });

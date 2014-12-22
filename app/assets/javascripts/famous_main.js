@@ -5,8 +5,7 @@ define(function (require, exports, module) {
 
     var AppView = require('views/AppView');
 
-    var Config = require('data/Config');
-    var SlideData = require('data/SlideData');
+    var Config = require('playlists/article');
 
     var Surface = require('famous/core/Surface');
 
@@ -16,14 +15,26 @@ define(function (require, exports, module) {
 
     function initApp() {
         // parses out reponse data and retrieves array of urls
-        data = SlideData;
-        addContent(data);
+        initConfig();
+
     }
 
-    function addContent(data) {
+    function initConfig() {
+        var playlist = document.getElementById("playlist");
+        var url = 'playlists/' + playlist.value;
+    //    if (require.defined(url)) {
+     //       Config = require(url);
+    //    }
+        require([url], function (config) {
+            Config = config;
+            addContent();
+        });
+    }
+
+    function addContent() {
         // instantiates AppView with our url data
         this.appView = new AppView({
-            data: undefined //data
+            config: Config
         });
         mainContext.add(this.appView);
 

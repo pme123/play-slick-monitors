@@ -10,11 +10,10 @@ define(function (require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
     var ImageSurface = require('famous/surfaces/ImageSurface');
 
-    var SlideData = require('data/SlideData');
     var Transitionable = require('famous/transitions/Transitionable');
     var SpringTransition = require('famous/transitions/SpringTransition');
 
-    var Config = require('data/Config');
+    var Config;
 
     Transitionable.registerMethod('spring', SpringTransition);
 
@@ -22,6 +21,9 @@ define(function (require, exports, module) {
     function SlideView() {
         // Applies View's constructor function to EmptyView class
         View.apply(this, arguments);
+
+        Config = this.options.config;
+
         this.rootModifier = new StateModifier({
             align: [0.5, 0.0],
             origin: [0.5, 0.0],
@@ -43,12 +45,10 @@ define(function (require, exports, module) {
 
     // Default options for EmptyView class
     SlideView.DEFAULT_OPTIONS = {
-        size: [Config.slideWidth, Config.slideHeight],
-        filmBorder: Config.filmBorder,
-        photoBorder: Config.photoBorder,
+        size: undefined,
+        config: undefined,
         photoUrl: undefined,
-        photoTitle: undefined,
-        angle: Config.angle
+        photoTitle: undefined
     };
 
     function _createBackground() {
@@ -66,7 +66,7 @@ define(function (require, exports, module) {
     }
 
     function _createFilm() {
-        this.options.filmSize = this.options.size[0] - 2 * this.options.filmBorder;
+        this.options.filmSize = Config.slideWidth - 2 * Config.filmBorder;
 
         var film = new Surface({
             size: [this.options.filmSize, this.options.filmSize]
@@ -76,24 +76,24 @@ define(function (require, exports, module) {
         var filmModifier = new StateModifier({
             origin: [0.5, 0],
             align: [0.5, 0],
-            transform: Transform.translate(0, this.options.filmBorder, 0.05)
+            transform: Transform.translate(0, Config.filmBorder, 0.05)
         });
 
         this.mainNode.add(filmModifier).add(film);
     }
 
     function _createPhoto() {
-        var size = this.options.filmSize - 2 * this.options.photoBorder;
+        var size = this.options.filmSize - 2 * Config.photoBorder;
 
         var photo = new ImageSurface({
             size: [size, size],
-            content: this.options.photoUrl,
+            content: this.options.photoUrl
         });
         photo.addClass('photo');
         this.photoModifier = new StateModifier({
             origin: [0.5, 0],
             align: [0.5, 0],
-            transform: Transform.translate(0, this.options.filmBorder + this.options.photoBorder, 0.1),
+            transform: Transform.translate(0, Config.filmBorder + Config.photoBorder, 0.1),
             opacity: 0.01
         });
 
@@ -101,10 +101,10 @@ define(function (require, exports, module) {
     }
 
     function _createText() {
-        var size = 2 * this.options.photoBorder;
+        var size = 2 * Config.photoBorder;
 
         var title = new Surface({
-            size: [this.options.filmSize - 2 * this.options.photoBorder, size],
+            size: [this.options.filmSize - 2 * Config.photoBorder, size],
             content: this.options.photoTitle,
             properties: {
                 fontSize: Config.photoFontSize
@@ -115,7 +115,7 @@ define(function (require, exports, module) {
         this.titleModifier = new StateModifier({
             origin: [0.5, 0],
             align: [0.5, 0],
-            transform: Transform.translate(0, this.options.filmSize + 1.5 * this.options.filmBorder, 0.1),
+            transform: Transform.translate(0, this.options.filmSize + 1.5 * Config.filmBorder, 0.1),
             opacity: 0.01
         });
 
@@ -124,8 +124,8 @@ define(function (require, exports, module) {
 
 
     SlideView.prototype.fadeIn = function () {
-        this.photoModifier.setOpacity(1, {duration: 1500, curve: 'easeIn'});
-        this.titleModifier.setOpacity(1, {duration: 1500, curve: 'easeIn'});
+        this.photoModifier.setOpacity(1, Config.lightboxFadeIn);
+        this.titleModifier.setOpacity(1, Config.lightboxFadeIn);
         this.shake();
     };
 
@@ -134,14 +134,14 @@ define(function (require, exports, module) {
 
         // rotates the slide view back along the top edge
         this.rootModifier.setTransform(
-            Transform.rotateX(this.options.angle),
-            {duration: 200, curve: 'easeOut'}
+            Transform.rotateX(Config.angle),
+            Config.lightboxShakeRotate
         );
 
         // returns the slide back to 0 degress but using a spring transition
         this.rootModifier.setTransform(
             Transform.identity,
-            {method: 'spring', period: 600, dampingRatio: 0.15}
+            Config.lightboxBounceRotate
         );
     };
 

@@ -1,81 +1,78 @@
 .top {
-margin: 6px;
-padding: 6px;
+    margin: 6px;
+    padding: 6px;
 
 }
 
 .float-left {
-padding: 12px;
-margin: 2px;
-float:left;
+    padding: 12px;
+    margin: 2px;
+    float: left;
 
 }
 
 .center {
-position: relative;
-top: 20px;
-float:bottom;
-clear: left;
-margin: 20px;
+    position: relative;
+    top: 20px;
+    float: bottom;
+    clear: left;
+    margin: 20px;
 
 }
 
 table, th, td {
-text-align: left;
-padding: 10px;
-   border: 1px dotted black;
-   border-collapse: collapse;
+    text-align: left;
+    padding: 10px;
+    border: 1px dotted black;
+    border-collapse: collapse;
 }
 
 th {
-background-color: lightgray;
+    background-color: lightgray;
 }
 
 body {
-font-family: "Apple SD Gothic Neo";
-font-size: medium;
+    font-family: "Apple SD Gothic Neo";
+    font-size: medium;
 }
 
 /* Style for image */
-#articleDiv
-{
-     box-sizing: initial
-     padding=18px;
-    height=300px;
-    width=300px;
-    min-height=300px;
-    min-width=300px;
-        border-style: dotted;
-            border-width: 1px;
-            border-color: gray;
-
+#articleDiv {
+    box-sizing: initial;
+    padding: 18px;
+    height: 300px;
+    width: 300px;
+    min-height: 300px;
+    min-width: 300px;
+    border-style: dotted;
+    border-width: 1px;
+    border-color: gray;
 
     -webkit-transition: opacity 0.8s ease-in;
     -moz-transition: opacity 0.8s ease-in;
     -o-transition: opacity 0.8s ease-in;
 
 }
-#articleDiv.fade-out
-{
-    opacity:0;
-}
-#articleDiv.fade-in
-{
-    opacity:1;
+
+#articleDiv.fade-out {
+    opacity: 0;
 }
 
-.articleImg
- {
+#articleDiv.fade-in {
+    opacity: 1;
+}
 
-      margin=18px;
-     height=300px;
-     width=350px;
-     min-height=300px;
-     min-width=300px;
+.articleImg {
 
+    margin: 18px;
+    height: 300px;
+    width: 350px;
+    min-height: 300px;
+    min-width: 300px;
 
- }
- p,h3,h4,h5,h6 {
- margin: 10px;
-     max-width: 350px;
- }
+}
+
+p, h3, h4, h5, h6 {
+    margin: 10px;
+    max-width: 350px;
+}

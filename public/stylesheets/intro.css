@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'StalemateFont';
+    src: url('Stalemate-Regular.ttf') format('truetype');
+}
+
+
+body {
+    font-family: StalemateFont, sans-serif;
+}

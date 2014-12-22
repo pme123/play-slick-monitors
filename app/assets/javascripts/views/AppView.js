@@ -7,11 +7,11 @@ define(function (require, exports, module) {
     var ContainerSurface = require('famous/surfaces/ContainerSurface');
     var SlideshowView = require('views/SlideshowView');
 
-    var Config = require('data/Config');
+    var Config;
 
     function AppView() {
         View.apply(this, arguments);
-
+        Config = this.options.config;
         _createSlideshow.call(this);
     }
 
@@ -19,26 +19,21 @@ define(function (require, exports, module) {
     AppView.prototype.constructor = AppView;
 
     AppView.DEFAULT_OPTIONS = {
-        // it's a good idea to add a property in the default options
-        // even when it's undefined
-        data: undefined,
-        slideWidth: Config.slideWidth,
-        slideHeight: Config.slideHeight,
-        slidePosition: Config.slidePosition
+        config: undefined
     };
 
     function _createSlideshow() {
         this.slideshowView = new SlideshowView({
-            size: [this.options.slideWidth, this.options.slideHeight],
-            data: this.options.data
+        config: Config
         });
 
         var slideshowModifier = new StateModifier({
             origin: [0.5, 0],
             align: [0.5, 0],
-            transform: [0, this.options.slidePosition, 0]
+            transform: [0, Config.slidePosition, 0]
         });
         var slideshowContainer = new ContainerSurface({
+            config: Config,
             properties: {
                 overflow: 'hidden'
             }
