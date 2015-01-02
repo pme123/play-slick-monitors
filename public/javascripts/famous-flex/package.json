@@ -1,0 +1,82 @@
+{
+  "name": "famous-flex",
+  "version": "0.1.3",
+  "homepage": "https://github.com/IjzerenHein/famous-flex",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IjzerenHein/famous-flex.git"
+  },
+  "browserify": {
+    "transform": [
+      "deamdify",
+      "famousify",
+      "brfs"
+    ]
+  },
+  "author": {
+    "name": "Hein Rutjes",
+    "email": "hrutjes@gmail.com"
+  },
+  "description": "Flexible scrollview and layout-controller for famo.us",
+  "keywords": [
+    "famo.us",
+    "famous",
+    "flex",
+    "famous-flex",
+    "famousflex",
+    "layoutcontroller",
+    "scrollcontroller",
+    "scrollview",
+    "flexscrollview",
+    "flex-scrollview"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/IjzerenHein/famous-flex/blob/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/IjzerenHein/famous-flex/issues"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "brfs": "latest",
+    "browserify": "latest",
+    "deamdify": "latest",
+    "famousify": "latest",
+    "grunt": "latest",
+    "grunt-eslint": "latest",
+    "grunt-jscs": "latest",
+    "grunt-jsdoc-to-markdown": "latest"
+  },
+  "files": [
+    "src",
+    "LICENSE"
+  ],
+  "gitHead": "aa6ba42beb7d6adf6883955c4016e6d758aac932",
+  "_id": "famous-flex@0.1.3",
+  "scripts": {},
+  "_shasum": "77591773f2866b922a6b86d8112bf0cf5656fc41",
+  "_from": "famous-flex@",
+  "_npmVersion": "2.1.8",
+  "_nodeVersion": "0.10.33",
+  "_npmUser": {
+    "name": "ijzerenhein",
+    "email": "hrutjes@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "ijzerenhein",
+      "email": "hrutjes@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "77591773f2866b922a6b86d8112bf0cf5656fc41",
+    "tarball": "http://registry.npmjs.org/famous-flex/-/famous-flex-0.1.3.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/famous-flex/-/famous-flex-0.1.3.tgz"
+}

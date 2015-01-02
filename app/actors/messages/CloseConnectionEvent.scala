@@ -1,7 +1,10 @@
 package actors.messages
 
-import models.Client
+import models.{AdminServer, Client}
 
 case class CloseConnectionEvent(client: Client) {
+
+}
+case class CloseServerConnectionEvent(adminServer: AdminServer) {
 
 }
