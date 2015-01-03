@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'StalemateFont';
+    src: url('Stalemate-Regular.ttf') format('truetype');
+}
+
 html {
     background: #404040;
 }
@@ -10,6 +15,16 @@ body {
     -ms-user-select: none;
     user-select: none;
     font-family: Trebuchet, sans-serif;
+}
+
+.title {
+    z-index: 2;
+    pointer-events: none;
+    color: #404040;
+    font-size: 32pt;
+    text-align: right;
+    text-shadow: 2px 2px 2px #01af40;
+    font-family: StalemateFont, sans-serif;
 }
 
 .film {
@@ -37,4 +52,21 @@ body {
     text-align: right;
 }
 
+.article-text {
+    z-index: 2;
+    cursor: pointer;
+    color: #fff;
+    border: dotted 1px;
+    padding: 3px;
+    font-size: 9pt;
+
+}
+
+.footer {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 8pt;
+    color: #aaa;
+    background-color: #fff;
+}
 

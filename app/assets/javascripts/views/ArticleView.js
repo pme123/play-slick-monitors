@@ -36,7 +36,7 @@ define(function (require, exports, module) {
         var front = new ImageSurface({
             content: article.img,
             properties: {
-                backgroundColor: 'gray'
+                backgroundColor: '#eee'
             }
         });
         flipper.setFront(front);
@@ -45,9 +45,9 @@ define(function (require, exports, module) {
         var back = new Surface({
             content: article.name,
             properties: {
-                backgroundColor: 'gray'
             }
         });
+        back.addClass('article-text');
         flipper.setBack(back);
         back.on('mouseover', _doToggle.bind(this));
         back.on('click', _showEdit.bind(this));

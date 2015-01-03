@@ -12,8 +12,7 @@ define(function (require, exports, module) {
 
     var Transitionable = require('famous/transitions/Transitionable');
     var SpringTransition = require('famous/transitions/SpringTransition');
-
-    var Config;
+    var Config = require("playlists/intro");
 
     Transitionable.registerMethod('spring', SpringTransition);
 
@@ -21,8 +20,6 @@ define(function (require, exports, module) {
     function ArticleEditView() {
         // Applies View's constructor function to EmptyView class
         View.apply(this, arguments);
-
-        Config = this.options.config;
 
         this.rootModifier = new StateModifier({
             align: [0.5, 0.0],

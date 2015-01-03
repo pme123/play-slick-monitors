@@ -18,7 +18,10 @@ define(function (require, exports, module) {
     var CollectionLayout = require('famous-flex/layouts/CollectionLayout');
     var ListLayout = require('famous-flex/layouts/ListLayout');
 
+    var HeaderView = require('views/HeaderView');
+    var FooterView = require('views/FooterView');
     var ArticleView = require('views/ArticleView');
+    var ArticleEditView = require('views/ArticleEditView');
 
     var mainContext = Engine.createContext();
 
@@ -45,22 +48,16 @@ define(function (require, exports, module) {
 
     function _createLayout() {
         layout = new HeaderFooterLayout({
-            headerSize: 100,
-            footerSize: 50
+            headerSize: 70,
+            footerSize: 35
         });
 
         mainContext.add(layout);
     }
 
     function _addHeader() {
-        layout.header.add(new Surface({
-            content: "Header",
-            properties: {
-                backgroundColor: 'gray',
-                lineHeight: "100px",
-                textAlign: "center"
-            }
-        }));
+        var headerView = new HeaderView({})
+        layout.header.add(headerView);
     }
 
     function _addContent() {
@@ -69,14 +66,8 @@ define(function (require, exports, module) {
     }
 
     function _addFooter() {
-        layout.footer.add(new Surface({
-            content: "Footer",
-            properties: {
-                backgroundColor: 'gray',
-                lineHeight: "50px",
-                textAlign: "center"
-            }
-        }));
+        var footerView = new FooterView();
+        layout.footer.add(footerView);
     }
 
     // Establishes prototype chain for ServerView class to inherit from View
@@ -133,14 +124,21 @@ define(function (require, exports, module) {
             var editSurface = new Surface({
                 content: json.name
             });
-            layout.content.set(editModifier).add(editSurface);
+            var slide = new ArticleEditView({
+                size: this.options.size,
+                photoUrl: json.img,
+                photoTitle: json.name
+            });
+            layout.content.set(slide);
         });
 
         ServerView.prototype.scrollView.push(articleView);
     };
 
     // Default options for ServerView class
-    ServerView.DEFAULT_OPTIONS = {};
+    ServerView.DEFAULT_OPTIONS = {
+        size: [400, 400]
+    };
 
     // Define your helper functions and prototype methods here
 
