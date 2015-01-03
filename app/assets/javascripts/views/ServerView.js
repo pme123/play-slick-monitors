@@ -40,7 +40,6 @@ define(function (require, exports, module) {
         _addHeader.call(this);
         _addContent.call(this);
         _addFooter.call(this);
-        _setListeners.call(this);
 
     }
 
@@ -65,8 +64,8 @@ define(function (require, exports, module) {
     }
 
     function _addContent() {
-
-        layout.content.add(_createScrollView.call(this));
+        _createScrollView.call(this);
+        layout.content.set(ServerView.prototype.scrollView);
     }
 
     function _addFooter() {
@@ -93,14 +92,15 @@ define(function (require, exports, module) {
                 margins: [10, 10, 10, 10],
                 spacing: [10, 10]
             },
+            opacity: 0.5,
             useContainer: true,
             //  autoPipeEvents: true,
             paginated: true,
             flow: true,             // enable flow-mode (can only be enabled from the constructor)
             insertSpec: {           // render-spec used when inserting renderables
-                opacity: 0          // start opacity is 0, causing a fade-in effect,
-                //  size: [0, 0],     // uncommented to create a grow-effect
-                // transform: Transform.translate(-300, 0, 0) // uncomment for slide-in effect
+                opacity: 0,          // start opacity is 0, causing a fade-in effect,
+                size: [0, 0]     // uncommented to create a grow-effect
+                //       transform: Transform.translate(-300, 0, 0) // uncomment for slide-in effect
             },
             //removeSpec: {...},    // render-spec used when removing renderables
             nodeSpring: {           // spring-options used when transitioning between states
@@ -108,7 +108,6 @@ define(function (require, exports, module) {
                 period: 1000        // duration of the animation
             }
         });
-        return ServerView.prototype.scrollView;
     }
 
     ServerView.prototype.showClient = function (json) {
@@ -117,24 +116,31 @@ define(function (require, exports, module) {
     ServerView.prototype.showArticle = function (json) {
         var articleView = new ArticleView(json);
         articleView.on('hello', function() {
-            console.log("event yeee");
+            console.log("event yeee: " + json);
+
+            var editModifier = new Modifier({
+                origin: [0, 0.5],
+                align: [0, 0.5],
+                size: [400, 400],
+                transform: function () {
+                    return Transform.translate(0, 0, 4);
+                },
+                opacity: function () {
+                    return 0.5;
+                }
+
+            });
+            var editSurface = new Surface({
+                content: json.name
+            });
+            layout.content.set(editModifier).add(editSurface);
         });
-        ServerView.prototype.scrollView.subscribe(articleView);
+
         ServerView.prototype.scrollView.push(articleView);
-        console.log("showArticle: " + json);
     };
 
     // Default options for ServerView class
     ServerView.DEFAULT_OPTIONS = {};
-
-    function _setListeners() {
-        ServerView.prototype.scrollView.on('hello', function(){
-            console.log("event received");
-        }.bind(this));
-        this._eventInput.on('hello',function(){
-            console.log("event received333");
-        });
-    }
 
     // Define your helper functions and prototype methods here
 

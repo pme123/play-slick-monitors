@@ -12,34 +12,30 @@ define(function (require, exports, module) {
 
     function initApp() {
         // parses out reponse data and retrieves array of urls
-        addContent();
+        _addContent.call(this);
+        _addWebSocket.call(this);
     }
 
-
-
-    function setArticle(articles) {
-        console.log("articlesllll\n: " + articles.value);
-
-    }
-
-    function addContent() {
+    function _addContent() {
         // instantiates ServerView with our url data
         this.serverView = new ServerView({});
         mainContext.add(this.serverView);
+        console.log("_addContent: " + this.serverView);
 
     }
 
-    webSocket();
-    function webSocket() {
+
+    function _addWebSocket() {
+        console.log("_addWebSocket: " + this.serverView);
         if ("WebSocket" in window) {
             console.log("WebSocket is supported by your Browser!");
             // Let us open a web socket
-            var ws = new WebSocket(document.getElementById("ws-url").value);
-            ws.onopen = function () {
+            this.ws = new WebSocket(document.getElementById("ws-url").value);
+            this.ws.onopen = function () {
                 console.log("WebSocket open ...");
             };
-            ws.onmessage = function (evt) {
-                console.log("Message is received...");
+            this.ws.onmessage = function (evt) {
+                console.log("Message is received..." + this.serverView);
 
                 var json = JSON.parse(evt.data);
                 if (json["messageType"] == "article") {
@@ -49,7 +45,7 @@ define(function (require, exports, module) {
                     ServerView.prototype.showClient(json);
                 }
             };
-            ws.onclose = function () {
+            this.ws.onclose = function () {
                 // websocket is closed.
                 console.log("Connection is closed...");
             };
