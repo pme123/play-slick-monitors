@@ -15,6 +15,7 @@ define(function (require, exports, module) {
     var Config = require("playlists/intro");
 
     Transitionable.registerMethod('spring', SpringTransition);
+    var transitionable = new Transitionable(0);
 
     // Constructor function for our EmptyView class
     function ArticleEditView() {
@@ -22,9 +23,14 @@ define(function (require, exports, module) {
         View.apply(this, arguments);
 
         this.rootModifier = new StateModifier({
-            align: [0.5, 0.0],
+            align: function () {
+                return [transitionable.get() / 2, transitionable.get() / 2];
+            },
             origin: [0.5, 0.0],
-            size: this.options.size
+            size: this.options.size,
+            opacity: function () {
+                return transitionable.get();
+            }
         });
 
         // saving a reference to the new node
@@ -32,8 +38,8 @@ define(function (require, exports, module) {
 
         _createBackground.call(this);
         _createFilm.call(this);
-        _createPhoto.call(this);
-        _createText.call(this);
+        //   _createPhoto.call(this);
+        //   _createText.call(this);
     }
 
     // Establishes prototype chain for EmptyView class to inherit from View
@@ -42,7 +48,7 @@ define(function (require, exports, module) {
 
     // Default options for EmptyView class
     ArticleEditView.DEFAULT_OPTIONS = {
-        size: undefined,
+        size: [Config.slideWidth, Config.slideHeight],
         config: undefined,
         photoUrl: undefined,
         photoTitle: undefined

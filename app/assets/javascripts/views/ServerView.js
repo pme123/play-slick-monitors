@@ -9,6 +9,8 @@ define(function (require, exports, module) {
     var Surface = require('famous/core/Surface');
     var ImageSurface = require('famous/surfaces/ImageSurface');
     var Transform = require('famous/core/Transform');
+    var Transitionable = require('famous/transitions/Transitionable');
+    var Easing = require('famous/transitions/Easing');
     var Modifier = require('famous/core/Modifier');
     var StateModifier = require('famous/modifiers/StateModifier');
 
@@ -108,28 +110,26 @@ define(function (require, exports, module) {
         var articleView = new ArticleView(json);
         articleView.on('hello', function() {
             console.log("event yeee: " + json);
-
             var editModifier = new Modifier({
-                origin: [0, 0.5],
-                align: [0, 0.5],
-                size: [400, 400],
-                transform: function () {
-                    return Transform.translate(0, 0, 4);
+                align: function () {
+                    return [transitionable.get() / 2, transitionable.get() / 2];
                 },
+                origin: [0.5, 0.5],
+                size: [400, 400],
+
                 opacity: function () {
-                    return 0.5;
+                    return transitionable.get();
                 }
 
             });
-            var editSurface = new Surface({
-                content: json.name
-            });
             var slide = new ArticleEditView({
-                size: this.options.size,
                 photoUrl: json.img,
                 photoTitle: json.name
             });
-            layout.content.set(slide);
+            layout.content.set(editModifier).add(slide);
+            transitionable.set(1, {
+                duration: 5000, curve: Easing.outBack
+            });
         });
 
         ServerView.prototype.scrollView.push(articleView);
@@ -137,7 +137,6 @@ define(function (require, exports, module) {
 
     // Default options for ServerView class
     ServerView.DEFAULT_OPTIONS = {
-        size: [400, 400]
     };
 
     // Define your helper functions and prototype methods here
