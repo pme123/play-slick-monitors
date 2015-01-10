@@ -1,23 +1,17 @@
 @(articles: List[Article], clients: List[Client])(implicit request: RequestHeader)
 
-@import helper._
-
 @moreScripts = {
+    <script src="@routes.Assets.at("javascripts/server.js")" type="text/javascript" charset="utf-8"></script>
 
 }
 
 @main("Simple Signage: Server", moreScripts) {
 
-<header class="top" xmlns="http://www.w3.org/1999/html">
-    <!-- <div class="float-left">
-         <h1>Simple Signage: Server</h1>
-         <h4><a href="@routes.Application.server()">Reload Page.</a></h4>
-     </div>
-       <div class="float-left">
-           <a class="button blue" href="@routes.Twitter.register()">Register</a>
-           Register with your Twitter Account.
-       </div>
-       -->
+    <header class="top" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+            <!-- Embedded Javascript router -->
+        @helper.javascriptRouter("jsRoutes")(
+            routes.javascript.Application.activateArticle
+        )
 </header>
 <section class="center">
     <article class="float-left">
@@ -25,24 +19,33 @@
         <h2>Articles</h2>
         <table>
             <th>Name</th>
+            <th>Playlist</th>
             <th>Description</th>
             <th>Image</th>
+            <th>active</th>
             <th>delete</th>
             @for(article <- articles) {
             <tr>
                 <td>@article.name</td>
+                <td>@article.playlist</td>
                 <td>@article.descr</td>
-                <td><img width="100px" src="/@article.img"></td>
-                <td><a href="/client/delete/@article.name" onclick="return confirm('Are you sure?');"> <img src="@routes.Assets.at("icons/delete.png")"/></a></td>
+                <td><img width="100px" src="@article.img"></td>
+                <td> <input name="active" type="checkbox" @if(article.active) {
+                    checked } onchange="activateArticle('@article.name')"/>
+                </td>
+                <td><a href="/article/delete/@article.name" onclick="return confirm ( 'Are you sure?' ) ;"> <img src="@routes.Assets.at("icons/delete.png")"/></a></td>
             </tr>
             }
         </table>
         <hr>
         <form action="/insertArticle" method="POST">
             <input name="name" type="text" placeholder="enter name of article"/>
+            <input name="playlist" type="text" placeholder="enter Playlist name"/>
             <input name="descr" type="text" placeholder="enter description"/>
             <input name="img" type="text" placeholder="enter img URL"/>
+            <input name="active" type="checkbox" value="true">is active
             <input id="putIt" type="submit" value="Add new Article"/>
+
 
         </form>
         <hr>
@@ -53,12 +56,16 @@
                 <td>HP 20-2000ez All-in-One</td>
             </tr>
             <tr>
+                <td>Playlist:</td>
+                <td>article</td>
+            </tr>
+            <tr>
                 <td>Descr:</td>
                 <td>RAM 4 GB DDR3 . - Produkttyp All in One . - Festplatte 500 GB</td>
             </tr>
             <tr>
                 <td>Img:</td>
-                <td>assets/images/article6.jpg</td>
+                <td>/assets/images/article6.jpg</td>
             </tr>
         </table>
     </article>

@@ -3,36 +3,37 @@
 # ~~~~
 
 # Home page
-GET         /                           controllers.Application.index()
-GET         /server                     controllers.Application.server()
-GET         /client                     controllers.Application.client()
-GET         /client/delete/:name        controllers.Application.deleteClient(name: String)
-GET         /webSocket                  controllers.WebSockets.socket()
-GET         /serverWebSocket            controllers.ServerWebSockets.socket()
-GET        /webSocket/:order            controllers.WebSockets.orderredSocket(order: Int)
-GET        /webSocket/:order/:playlist  controllers.WebSockets.orderredPlaySocket(order: Int, playlist: String)
+GET         /                                  controllers.Application.index()
+GET         /server                            controllers.Application.server()
+GET         /client                            controllers.Application.client()
+GET         /article/delete/:name              controllers.Application.deleteArticle(name: String)
+GET         /article/activate/:name            controllers.Application.activateArticle(name: String)
+GET         /webSocket                         controllers.WebSockets.socket()
+GET         /serverWebSocket                   controllers.ServerWebSockets.socket()
+GET         /webSocket/:order                  controllers.WebSockets.orderredSocket(order: Int)
+GET         /webSocket/:order/:playlist        controllers.WebSockets.orderredPlaySocket(order: Int, playlist: String)
 
 # famo.us
-GET         /famous                     controllers.FamousApp.index()
-GET         /famous/:order              controllers.FamousApp.display(order: Int)
-GET         /famous/:playlist/:order    controllers.FamousApp.run(order: Int, playlist: String)
-GET         /famousserver               controllers.FamousApp.server()
+GET         /famous                            controllers.FamousApp.index()
+GET         /famous/:order                     controllers.FamousApp.display(order: Int)
+GET         /famous/:playlist/:order           controllers.FamousApp.run(order: Int, playlist: String)
+GET         /famousserver                      controllers.FamousApp.server()
 # Twitter
-GET         /register                   controllers.Twitter.register()
-GET         /register_callback          controllers.Twitter.registerCallback()
+GET         /register                          controllers.Twitter.register()
+GET         /register_callback                 controllers.Twitter.registerCallback()
 # WebSocket test
-GET         /echo                       controllers.EchoWebSockets.index()
-GET         /echoWebSocket              controllers.EchoWebSockets.echo()
+GET         /echo                              controllers.EchoWebSockets.index()
+GET         /echoWebSocket                     controllers.EchoWebSockets.echo()
 
 # Home page
-POST        /insertArticle              controllers.Application.insertArticle
+POST        /insertArticle                     controllers.Application.insertArticle
 
-GET         /articles/all               controllers.Application.jsonFindAllArticles
-GET         /clients/all                controllers.Application.jsonFindAllClients
+GET         /articles/all                      controllers.Application.jsonFindAllArticles
+GET         /clients/all                       controllers.Application.jsonFindAllClients
 
 # Home page
-POST        /json/insert                controllers.Application.jsonInsert
+POST        /json/insert                       controllers.Application.jsonInsert
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file                      controllers.Assets.at(path="/public", file)
 

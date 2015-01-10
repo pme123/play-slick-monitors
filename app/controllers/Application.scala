@@ -13,8 +13,8 @@ import play.api.mvc._
 
 object Application extends Controller {
 
-  import Articles._
-  import Clients._
+  import models.Articles._
+  import models.Clients._
 
   //JSON read/write macro
   implicit val articleFormat = Json.format[Article]
@@ -28,11 +28,17 @@ object Application extends Controller {
     Ok(views.html.server(articles.list, clients.list))
   }
 
-  def deleteClient(name: String) = DBAction { implicit request =>
-    Logger.info("delete client: "+name)
+  def deleteArticle(name: String) = DBAction { implicit request =>
+    Logger.info("delete article: " + name)
     (articles filter (_.name === name)).delete
 
     Ok(views.html.server(articles.list, clients.list))
+  }
+
+  def activateArticle(name: String) = DBAction { implicit request =>
+    Logger.info("activate article: " + name)
+    Articles.updateActiveState(name)
+    Ok("Everything worked")
   }
 
   def client = DBAction { implicit request =>
@@ -44,7 +50,8 @@ object Application extends Controller {
       Articles.nameCol -> text(),
       Articles.descrCol -> text(),
       Articles.imgCol -> text(),
-      Articles.playlistCol -> text()
+      Articles.playlistCol -> text(),
+      Articles.activeCol -> boolean
     )(Article.apply)(Article.unapply)
   )
 

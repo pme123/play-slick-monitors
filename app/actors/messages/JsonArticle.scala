@@ -1,8 +1,7 @@
 package actors.messages
 
 import models.Article
-import play.api.libs.json.JsValue
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 
 
 class JsonArticle(article: Article) extends ClientEvent {
@@ -12,7 +11,9 @@ class JsonArticle(article: Article) extends ClientEvent {
         "messageType" -> "article",
         "name" -> article.name,
         "descr" -> article.descr,
-        "img" -> article.img
+    "img" -> article.img,
+    "playlist" -> article.playlist,
+    "active" -> article.active
 
   )
 }

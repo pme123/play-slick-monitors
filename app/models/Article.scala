@@ -1,6 +1,5 @@
 package models
 
-import play.api.Logger
 import play.api.db.slick.Config.driver.simple._
 
 import scala.slick.lifted.TableQuery
@@ -11,11 +10,14 @@ object Articles extends TableQuery(new Articles(_)) {
   val descrCol = "descr"
   val imgCol = "img"
   val playlistCol = "playlist"
+  val activeCol = "active"
   //create an instance of the table
   val articles = TableQuery[Articles] //see a way to architect your app in the computers-database-slick sample
 
   def nextArticle(lastArticle: Option[Article], playlist: String)(implicit session: Session): Option[Article] = {
-    val filteredArticles = articles.filter(article => article.playlist === playlist).list
+    val filteredArticles = articles
+      .filter(article => article.playlist === playlist)
+      .filter(article => article.active).list
 
     def inner(lastArticle: Article, allArticles: List[Article]): Option[Article] = {
       allArticles match {
@@ -31,9 +33,14 @@ object Articles extends TableQuery(new Articles(_)) {
     }
   }
 
+  def updateActiveState(articleName: String)(implicit session: Session) = {
+    val query = for {a <- articles if a.name === articleName} yield a.active
+    for (active <- query.list) (query.update(!active))
+  }
+
 }
 
-case class Article(name: String, descr: String, img: String, playlist: String)
+case class Article(name: String, descr: String, img: String, playlist: String, active: Boolean)
 
 
 /* Table mapping
@@ -50,6 +57,8 @@ class Articles(tag: Tag) extends Table[Article](tag, Articles.name) {
 
   def playlist = column[String](playlistCol, O.NotNull)
 
-  def * = (name, descr, img, playlist) <>(Article.tupled, Article.unapply)
+  def active = column[Boolean](activeCol, O.NotNull)
+
+  def * = (name, descr, img, playlist, active) <>(Article.tupled, Article.unapply)
 
 }

@@ -64,7 +64,7 @@ define(function (require, exports, module) {
 
     function _addContent() {
         _createScrollView.call(this);
-        layout.content.set(ServerView.prototype.scrollView);
+        layout.content.add(ServerView.prototype.scrollView);
     }
 
     function _addFooter() {
@@ -108,8 +108,10 @@ define(function (require, exports, module) {
     };
     ServerView.prototype.showArticle = function (json) {
         var articleView = new ArticleView(json);
+
         articleView.on('hello', function() {
             console.log("event yeee: " + json);
+            var transitionable = new Transitionable();
             var editModifier = new Modifier({
                 align: function () {
                     return [transitionable.get() / 2, transitionable.get() / 2];
