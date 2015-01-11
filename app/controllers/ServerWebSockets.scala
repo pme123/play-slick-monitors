@@ -3,7 +3,7 @@ package controllers
 import java.util.UUID
 
 import actors.EventPublisher
-import actors.messages.{CloseServerConnectionEvent, NewServerConnectionEvent, CloseConnectionEvent, NewConnectionEvent}
+import actors.messages.{CloseServerConnectionEvent, NewServerConnectionEvent}
 import akka.util.Timeout
 import models._
 import play.api.Logger

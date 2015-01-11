@@ -35,13 +35,13 @@ class EventPublisher() extends Actor {
           nextArticle.addClient(client, out)
           nextArticles = nextArticles + (client.playlist -> nextArticle)
       }
-      sendToAllServer(client);
+      sendToAllServer(client)
       Logger.info("New browser connected " + out + " - " + client)
       out ! new JsonClient(client).json
     case CloseConnectionEvent(client) =>
       nextArticles.get(client.playlist) match {
         case Some(nextArticle: NextArticle) => nextArticle.removeClient(client)
-        case None => assert(false, "There should be a NextArticle!") // should not happen
+        case None => assert(assertion = false, "There should be a NextArticle!") // should not happen
       }
       Logger.info("Browser " + client + "is disconnected")
     case NewServerConnectionEvent(adminServer, out) =>
@@ -66,21 +66,21 @@ class EventPublisher() extends Actor {
   }
 
   private def sendToAllServer(client: Client) = {
-    for (server <- adminServers.values)(server ! new JsonClient(client).json)
+    for (server <- adminServers.values) server ! new JsonClient(client).json
   }
 
   private def sendAllClients(adminServerOut: ActorRef) = {
     for {
       nextArticle <- nextArticles.values
       client <- nextArticle.connections.keys
-    } (adminServerOut ! new JsonClient(client).json)
+    } adminServerOut ! new JsonClient(client).json
   }
 
   private def sendAllArticles(adminServerOut: ActorRef) = {
     Connection.databaseObject().withSession { implicit session: Session =>
       for {index <- 0 to 20
            article <- Articles.articles
-      } (adminServerOut ! new JsonArticle(article).json)
+      } adminServerOut ! new JsonArticle(article).json
     }
   }
 

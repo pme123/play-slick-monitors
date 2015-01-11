@@ -35,7 +35,7 @@ object Articles extends TableQuery(new Articles(_)) {
 
   def updateActiveState(articleName: String)(implicit session: Session) = {
     val query = for {a <- articles if a.name === articleName} yield a.active
-    for (active <- query.list) (query.update(!active))
+    for (active <- query.list) query.update(!active)
   }
 
 }

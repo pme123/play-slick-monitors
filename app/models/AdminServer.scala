@@ -24,5 +24,5 @@ class AdminServers(tag: Tag) extends Table[AdminServer](tag, AdminServers.name) 
 
   def uuid = column[String](uuidCol, O.PrimaryKey)
 
-  def * = (uuid) <>(AdminServer.apply, AdminServer.unapply)
+  def * = uuid <>(AdminServer.apply, AdminServer.unapply)
 }

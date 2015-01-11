@@ -2,11 +2,8 @@ package global
 
 import _root_.actors.EventPublisher
 import conf.ApplicationConf._
-import models.{Article, Articles}
 import play.api._
-import play.api.db.slick.Config.driver.simple._
 import play.libs.Akka
-import slick.Connection
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._

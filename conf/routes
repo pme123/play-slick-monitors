@@ -18,9 +18,6 @@ GET         /famous                            controllers.FamousApp.index()
 GET         /famous/:order                     controllers.FamousApp.display(order: Int)
 GET         /famous/:playlist/:order           controllers.FamousApp.run(order: Int, playlist: String)
 GET         /famousserver                      controllers.FamousApp.server()
-# Twitter
-GET         /register                          controllers.Twitter.register()
-GET         /register_callback                 controllers.Twitter.registerCallback()
 # WebSocket test
 GET         /echo                              controllers.EchoWebSockets.index()
 GET         /echoWebSocket                     controllers.EchoWebSockets.echo()
