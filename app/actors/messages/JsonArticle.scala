@@ -5,7 +5,7 @@ import play.api.libs.json.{JsValue, Json}
 
 
 class JsonArticle(article: Article) extends ClientEvent {
-
+  var all: List[String] = List.empty
   def json: JsValue =
   Json.obj(
         "messageType" -> "article",

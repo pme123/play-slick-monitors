@@ -1,12 +1,11 @@
 package test
 
-import org.specs2.mutable._
-
-import play.api.db.slick.DB
-import play.api.db.slick.Config.driver.simple._
-import play.api.test._
-import play.api.test.Helpers._
 import models._
+import org.specs2.mutable._
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.DB
+import play.api.test.Helpers._
+import play.api.test._
 
 /**
  * test the kitty cat database
@@ -24,9 +23,9 @@ class DBSpec extends Specification {
       DB.withSession { implicit s: Session =>
         articles.filterNot(_.name === "x").delete
         val testKitties = Seq(
-          Article("kit", "black","img1"),
-          Article("garfield", "orange","img1"),
-          Article("creme puff", "grey","img1"))
+          Article("kit", "black", "img1", "intro", true),
+          Article("garfield", "orange", "img1", "intro", true),
+          Article("creme puff", "grey", "img1", "intro", true))
         articles.insertAll(testKitties: _*)
         articles.list must equalTo(testKitties)
       }

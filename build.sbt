@@ -14,5 +14,10 @@ ws,
 
 fork in Test := false
 
+seq(bintrayResolverSettings: _*)
+
+libraryDependencies += "org.clapper" %% "grizzled-slf4j" % "1.0.2"
+
+libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala, SbtWeb)
