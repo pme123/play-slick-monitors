@@ -27,6 +27,12 @@ object ServerWebSockets extends Controller {
       implicit request => out => WebSocketActor.props(out)
     }
   }
+
+  def famousSocket(): WebSocket[String, JsValue] = {
+    WebSocket.acceptWithActor[String, JsValue] {
+      implicit request => out => WebSocketActor.props(out)
+    }
+  }
   import akka.actor._
 
   object WebSocketActor {

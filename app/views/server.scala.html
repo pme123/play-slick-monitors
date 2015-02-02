@@ -6,6 +6,7 @@
 }
 
 @main("Simple Signage: Server", moreScripts) {
+    <input type="hidden" id="ws-url" value="@routes.ServerWebSockets.socket().webSocketURL()"/>
 
     <header class="top" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
             <!-- Embedded Javascript router -->
@@ -72,16 +73,13 @@
     <article class="float-left">
 
         <h2>Clients</h2>
-        <table>
-            <th>UUID</th>
-            @for(client <- clients) {
-            <tr>
-                <td>@client.uuid</td>
-            </tr>
-            }
+
+        <div id="clientUUID">ClientUUID</div>
         </table>
     </article>
+    <article class="float-left">
 
+    </article>
 </section>
 
 }

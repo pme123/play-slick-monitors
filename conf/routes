@@ -10,6 +10,7 @@ GET         /article/delete/:name              controllers.Application.deleteArt
 GET         /article/activate/:name            controllers.Application.activateArticle(name: String)
 GET         /webSocket                         controllers.WebSockets.socket()
 GET         /serverWebSocket                   controllers.ServerWebSockets.socket()
+GET        /famousServerWebSocket        controllers.ServerWebSockets.famousSocket()
 GET         /webSocket/:order                  controllers.WebSockets.orderredSocket(order: Int)
 GET         /webSocket/:order/:playlist        controllers.WebSockets.orderredPlaySocket(order: Int, playlist: String)
 

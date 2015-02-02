@@ -11,7 +11,6 @@ import play.libs.Akka
 import slick.Connection
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
 
 
 object EventPublisher {
@@ -35,14 +34,15 @@ class EventPublisher() extends Actor {
           nextArticle.addClient(client, out)
           nextArticles = nextArticles + (client.playlist -> nextArticle)
       }
-      sendToAllServer(client)
+      sendToAllServer(client, ConnectionAdded)
       Logger.info("New browser connected " + out + " - " + client)
-      out ! new JsonClient(client).json
+    //     out ! new JsonClient(client, ConnectionAdded).json
     case CloseConnectionEvent(client) =>
       nextArticles.get(client.playlist) match {
         case Some(nextArticle: NextArticle) => nextArticle.removeClient(client)
         case None => assert(assertion = false, "There should be a NextArticle!") // should not happen
       }
+      sendToAllServer(client, ConnectionRemoved)
       Logger.info("Browser " + client + "is disconnected")
     case NewServerConnectionEvent(adminServer, out) =>
       adminServers = adminServers + (adminServer -> out)
@@ -65,15 +65,15 @@ class EventPublisher() extends Actor {
     }
   }
 
-  private def sendToAllServer(client: Client) = {
-    for (server <- adminServers.values) server ! new JsonClient(client).json
+  private def sendToAllServer(client: Client, connectionEventType: ConnectionEventType) = {
+    for (server <- adminServers.values) server ! new JsonClient(client, connectionEventType).json
   }
 
   private def sendAllClients(adminServerOut: ActorRef) = {
     for {
       nextArticle <- nextArticles.values
       client <- nextArticle.connections.keys
-    } adminServerOut ! new JsonClient(client).json
+    } adminServerOut ! new JsonClient(client, ConnectionAdded).json
   }
 
   private def sendAllArticles(adminServerOut: ActorRef) = {
