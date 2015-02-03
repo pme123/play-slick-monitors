@@ -11,6 +11,7 @@ import play.libs.Akka
 import slick.Connection
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 
 object EventPublisher {
