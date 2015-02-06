@@ -57,7 +57,7 @@ define(function (require, exports, module) {
                 var json = JSON.parse(evt.data);
                 if (json["messageType"] == "article") {
                     AppView.prototype.showArticle(json);
-                } else if (json["messageType"] == "noClient") {
+                } else if (json["messageType"] == "exception") {
                     showException(json);
                 }
             };

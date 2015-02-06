@@ -71,13 +71,15 @@ object WebSockets extends Controller {
 
     @throws(classOf[Exception])
     override def postStop(): Unit = {
-      for (client <- retrieveClient(clientUUID)) (serverEventPublisher ! CloseConnectionEvent(client))
+      for (client <- retrieveClient(clientUUID)) (serverEventPublisher ! CloseConnectionEvent(client, out))
     }
 
     private def retrieveClient(clientUUID: String): Option[Client] = Connection.databaseObject().withSession { implicit session: Session =>
       val clientQuery = Clients.findByUUID(clientUUID)
       if (clientQuery.exists.run) {
-        Some(clientQuery.first)
+        val client: Clients#TableElementType = clientQuery.first
+        val overrideClientOrderPlaylist: Client = client.copy(order = order, playlist = playlist)
+        Some(overrideClientOrderPlaylist)
       } else {
         Logger.info("WebSocket No client found: " + JsonNoClient(clientUUID) + " - " + out)
         out ! JsonNoClient(clientUUID).json

@@ -38,7 +38,7 @@ class EventPublisher() extends Actor {
       sendToAllServer(client, ConnectionAdded)
       Logger.info("New browser connected " + out + " - " + client)
     //     out ! new JsonClient(client, ConnectionAdded).json
-    case CloseConnectionEvent(client) =>
+    case CloseConnectionEvent(client, out) =>
       nextArticles.get(client.playlist) match {
         case Some(nextArticle: NextArticle) => nextArticle.removeClient(client)
         case None => assert(assertion = false, "There should be a NextArticle!") // should not happen

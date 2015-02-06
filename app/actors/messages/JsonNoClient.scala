@@ -8,7 +8,7 @@ import play.api.libs.json.{JsValue, Json}
 case class JsonNoClient(clientUUID: String) extends ClientEvent {
   def json: JsValue =
     Json.obj(
-      "messageType" -> "noClient",
+      "messageType" -> "exception",
       "uuid" -> clientUUID,
       "errorMsg" -> s"Sorry there is no Client with the Ident: $clientUUID"
     )
