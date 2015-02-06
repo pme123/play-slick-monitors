@@ -5,6 +5,7 @@
 
 }
 
+
 @main("Simple Signage: Server", moreScripts) {
     <input type="hidden" id="ws-url" value="@routes.ServerWebSockets.socket().webSocketURL()"/>
 
@@ -13,73 +14,71 @@
         @helper.javascriptRouter("jsRoutes")(
             routes.javascript.Application.activateArticle
         )
-</header>
-<section class="center">
-    <article class="float-left">
+    </header>
+    <section class="center">
+        <article class="float-left">
 
-        <h2>Articles</h2>
-        <table>
-            <th>Name</th>
-            <th>Playlist</th>
-            <th>Description</th>
-            <th>Image</th>
-            <th>active</th>
-            <th>delete</th>
-            @for(article <- articles) {
-            <tr>
-                <td>@article.name</td>
-                <td>@article.playlist</td>
-                <td>@article.descr</td>
-                <td><img width="100px" src="@article.img"></td>
-                <td> <input name="active" type="checkbox" @if(article.active) {
-                    checked } onchange="activateArticle('@article.name')"/>
-                </td>
-                <td><a href="/article/delete/@article.name" onclick="return confirm ( 'Are you sure?' ) ;"> <img src="@routes.Assets.at("icons/delete.png")"/></a></td>
-            </tr>
-            }
-        </table>
-        <hr>
-        <form action="/insertArticle" method="POST">
-            <input name="name" type="text" placeholder="enter name of article"/>
-            <input name="playlist" type="text" placeholder="enter Playlist name"/>
-            <input name="descr" type="text" placeholder="enter description"/>
-            <input name="img" type="text" placeholder="enter img URL"/>
-            <input name="active" type="checkbox" value="true">is active
-            <input id="putIt" type="submit" value="Add new Article"/>
+            <h2>Articles</h2>
+            <table>
+                <th>Name</th>
+                <th>Playlist</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>active</th>
+                <th>delete</th>
+                @for(article <- articles) {
+                    <tr>
+                        <td>@article.name</td>
+                        <td>@article.playlist</td>
+                        <td>@article.descr</td>
+                        <td><img width="100px" src="@article.img"></td>
+                        <td> <input name="active" type="checkbox" @if(article.active) {
+                            checked } onchange="activateArticle('@article.name')"/>
+                        </td>
+                        <td><a href="/article/delete/@article.name" onclick="return confirm ( 'Are you sure?' ) ;"> <img src="@routes.Assets.at("icons/delete.png")"/></a></td>
+                    </tr>
+                }
+            </table>
+            <hr>
+            <form action="/insertArticle" method="POST">
+                <input name="name" type="text" placeholder="enter name of article"/>
+                <input name="playlist" type="text" placeholder="enter Playlist name"/>
+                <input name="descr" type="text" placeholder="enter description"/>
+                <input name="img" type="text" placeholder="enter img URL"/>
+                <input name="active" type="checkbox" value="true">is active
+                <input id="putIt" type="submit" value="Add new Article"/>
 
 
-        </form>
-        <hr>
-        <p>Example:</p>
-        <table>
-            <tr>
-                <td>Name:</td>
-                <td>HP 20-2000ez All-in-One</td>
-            </tr>
-            <tr>
-                <td>Playlist:</td>
-                <td>article</td>
-            </tr>
-            <tr>
-                <td>Descr:</td>
-                <td>RAM 4 GB DDR3 . - Produkttyp All in One . - Festplatte 500 GB</td>
-            </tr>
-            <tr>
-                <td>Img:</td>
-                <td>/assets/images/article6.jpg</td>
-            </tr>
-        </table>
-    </article>
-    <article class="float-left">
+            </form>
+            <hr>
+            <p>Example:</p>
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>HP 20-2000ez All-in-One</td>
+                </tr>
+                <tr>
+                    <td>Playlist:</td>
+                    <td>article</td>
+                </tr>
+                <tr>
+                    <td>Descr:</td>
+                    <td>RAM 4 GB DDR3 . - Produkttyp All in One . - Festplatte 500 GB</td>
+                </tr>
+                <tr>
+                    <td>Img:</td>
+                    <td>/assets/images/article6.jpg</td>
+                </tr>
+            </table>
+        </article>
+        <article class="float-left">
 
-        <h2>Clients</h2>
+            <h2>Clients</h2>
 
-        <div id="clientUUID">ClientUUID</div>
-        </table>
-    </article>
-    <article class="float-left">
+            <div id="clientUUID">ClientUUID</div>
+        </article>
+        <article class="float-left">
 
-    </article>
-</section>
-
+        </article>
+    </section>
 }

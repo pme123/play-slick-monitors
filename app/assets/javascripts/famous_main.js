@@ -57,6 +57,8 @@ define(function (require, exports, module) {
                 var json = JSON.parse(evt.data);
                 if (json["messageType"] == "article") {
                     AppView.prototype.showArticle(json);
+                } else if (json["messageType"] == "noClient") {
+                    showException(json);
                 }
             };
             ws.onclose = function () {
@@ -70,6 +72,10 @@ define(function (require, exports, module) {
         }
     }
 
+    function showException(json) {
+        var uuid = document.getElementById("errorMessage");
+        uuid.innerHTML = "<p class='error-msg'>" + json.errorMsg + "</p>";
+    }
 
 });
 

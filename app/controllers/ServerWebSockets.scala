@@ -3,7 +3,7 @@ package controllers
 import java.util.UUID
 
 import actors.EventPublisher
-import actors.messages.{CloseServerConnectionEvent, NewServerConnectionEvent}
+import actors.messages._
 import akka.util.Timeout
 import models._
 import play.api.Logger
@@ -14,6 +14,7 @@ import slick.Connection
 object ServerWebSockets extends Controller {
 
   val ref = EventPublisher.ref
+  val serverRef = ServerEventPublisher.ref
 
   import scala.concurrent.duration._
 
@@ -62,16 +63,17 @@ object ServerWebSockets extends Controller {
       Logger.info("Webactor started: " + uuid + " - " + out)
       out ! adminServer
       insertAdminServer(adminServer)
-      ref ! NewServerConnectionEvent(adminServer, out)
-
+      val event = NewServerConnectionEvent(adminServer, out)
+      ref ! event
+      serverRef ! event
       Logger.info("after adminServer insert: " + adminServer)
-
-
     }
 
     @throws(classOf[Exception])
     override def postStop(): Unit = {
-      ref ! CloseServerConnectionEvent(adminServer)
+      val event = CloseServerConnectionEvent(adminServer)
+      ref ! event
+      serverRef ! event
       removeAdminServer(uuid)
     }
 

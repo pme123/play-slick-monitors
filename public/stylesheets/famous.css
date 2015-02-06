@@ -70,3 +70,14 @@ body {
     background-color: #fff;
 }
 
+.error-msg {
+    text-align: center;
+    vertical-align: middle;
+    color: #f00;
+    border: dotted 1px;
+    margin: 50px;
+    padding: 20px;
+    font-size: 24pt;
+    font-family: Trebuchet, sans-serif;
+}
+

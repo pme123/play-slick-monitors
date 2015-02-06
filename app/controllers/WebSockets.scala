@@ -1,11 +1,8 @@
 package controllers
 
-import java.util.UUID
-
-import actors.EventPublisher
-import actors.messages.{CloseConnectionEvent, NewConnectionEvent}
+import actors.messages.{CloseConnectionEvent, JsonNoClient, NewConnectionEvent, ServerEventPublisher}
 import akka.util.Timeout
-import conf.ApplicationConf
+import conf.ApplicationConf._
 import models._
 import play.api.Logger
 import play.api.libs.json.JsValue
@@ -14,7 +11,8 @@ import slick.Connection
 
 object WebSockets extends Controller {
 
-  val ref = EventPublisher.ref
+  val serverEventPublisher = ServerEventPublisher.ref
+
 
   import scala.concurrent.duration._
 
@@ -23,28 +21,35 @@ object WebSockets extends Controller {
   import play.api.Play.current
   import play.api.mvc._
 
-  def socket(): WebSocket[String, JsValue] =   orderredSocket(0)
-  def orderredSocket(order: Int): WebSocket[String, JsValue] = orderredPlaySocket(order, ApplicationConf.DEFAULT_PLAY)
+  def socket(): WebSocket[String, JsValue] = orderredSocket(0)
+
+  def orderredSocket(order: Int): WebSocket[String, JsValue] = {
+    orderredPlaySocket(order, DEFAULT_PLAY)
+  }
 
   def orderredPlaySocket(order: Int, playlist: String): WebSocket[String, JsValue] = {
     WebSocket.acceptWithActor[String, JsValue] {
-      implicit request => out => WebSocketActor.props(out, order, playlist)
+      implicit request => out => WebSocketActor.props(out, DEFAULT_CLIENT, order, playlist)
     }
   }
+
+  def clientOrderredPlaySocket(clientUUID: String, order: Int, playlist: String): WebSocket[String, JsValue] = {
+    WebSocket.acceptWithActor[String, JsValue] {
+      implicit request => out => WebSocketActor.props(out, clientUUID, order, playlist)
+    }
+  }
+
   import akka.actor._
 
   object WebSocketActor {
-    def props(out: ActorRef, order: Int, playlist: String) = Props(new WebSocketActor(out, order, playlist))
+    def props(out: ActorRef, clientUUID: String, order: Int, playlist: String) = Props(new WebSocketActor(out, clientUUID: String, order, playlist))
   }
 
 
-  class WebSocketActor(out: ActorRef, order: Int, playlist: String) extends Actor {
+  class WebSocketActor(out: ActorRef, clientUUID: String, order: Int, playlist: String) extends Actor {
 
-    import models.Clients._
     import play.api.db.slick.Config.driver.simple._
 
-    val uuid = UUID.randomUUID().toString
-    val client = new Client(uuid, order, playlist)
 
     def receive = {
       case msg: String => Logger.info("ClientEvent received: " + msg)
@@ -57,33 +62,30 @@ object WebSockets extends Controller {
     @throws(classOf[Exception])
     override def preStart(): Unit = {
       super.preStart()
-      Logger.info("Webactor started: " + uuid + " - " + out)
-      out ! client
-      insertClient(client)
-      ref ! NewConnectionEvent(client, out)
-
-      Logger.info("after client insert: " + client)
-
-
+      Logger.info("Webactor started: " + clientUUID + " - " + out)
+      for (client <- retrieveClient(clientUUID)) {
+        Logger.info("after client insert: " + clientUUID)
+        serverEventPublisher ! NewConnectionEvent(client, out)
+      }
     }
 
     @throws(classOf[Exception])
     override def postStop(): Unit = {
-      ref ! CloseConnectionEvent(client)
-      removeClient(uuid)
+      for (client <- retrieveClient(clientUUID)) (serverEventPublisher ! CloseConnectionEvent(client))
     }
 
-    def insertClient(client: Client) =
-      Connection.databaseObject().withSession { implicit session: Session =>
-        clients.insert(client)
-        Redirect(routes.Application.index())
+    private def retrieveClient(clientUUID: String): Option[Client] = Connection.databaseObject().withSession { implicit session: Session =>
+      val clientQuery = Clients.findByUUID(clientUUID)
+      if (clientQuery.exists.run) {
+        Some(clientQuery.first)
+      } else {
+        Logger.info("WebSocket No client found: " + JsonNoClient(clientUUID) + " - " + out)
+        out ! JsonNoClient(clientUUID).json
+        None
       }
-
-    def removeClient(uuid: String) = Connection.databaseObject().withSession { implicit session: Session =>
-      (clients filter (_.uuid === uuid)).delete
-      Redirect(routes.Application.index())
     }
   }
+
 
 }
 

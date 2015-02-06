@@ -79,7 +79,7 @@ class EventPublisher() extends Actor {
 
   private def sendAllArticles(adminServerOut: ActorRef) = {
     Connection.databaseObject().withSession { implicit session: Session =>
-      for {index <- 0 to 20
+      for {
            article <- Articles.articles
       } adminServerOut ! new JsonArticle(article).json
     }

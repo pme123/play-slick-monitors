@@ -9,10 +9,12 @@ object FamousApp extends Controller {
 
   def index = display(0)
 
-  def display(order: Int) = run(order, DEFAULT_PLAY)
+  def display(order: Int) = displayPlaylist(order, DEFAULT_PLAY)
 
-  def run(order: Int, playlist: String) = DBAction { implicit request =>
-    Ok(views.html.famousclient(order, playlist))
+  def displayPlaylist(order: Int, playlist: String) = displayClientPlaylist(DEFAULT_CLIENT, order, playlist)
+
+  def displayClientPlaylist(clientUUID: String, order: Int, playlist: String) = DBAction { implicit request =>
+    Ok(views.html.famousclient(clientUUID, order, playlist))
   }
 
   def server = DBAction { implicit request =>

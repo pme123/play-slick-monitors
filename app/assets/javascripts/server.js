@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     webSocket();
 });
-var clients = [];
+
 
 function webSocket() {
     if ("WebSocket" in window) {
@@ -16,11 +16,7 @@ function webSocket() {
 
             var json = JSON.parse(evt.data);
             if (json["messageType"] == "client") {
-                if (json["connectionEvent"] == "ADDED") {
-                    addClient(json);
-                } else {
-                    removeClient(json)
-                }
+                updateClient(json)
             }
         };
         ws.onclose = function () {
@@ -35,25 +31,22 @@ function webSocket() {
 
 }
 
-function addClient(json) {
+var clients = {};
+
+function updateClient(json) {
     var uuid = document.getElementById("clientUUID");
-    clients.push(json.uuid);
+    clients[json.uuid] = json
+    console.log("Clients: " + clients)
     uuid.innerHTML = clientsHTML();
-
-}
-function removeClient(json) {
-    var uuid = document.getElementById("clientUUID");
-    var index = clients.indexOf("uuid");
-    clients.splice(index);
-
-    uuid.innerHTML = clientsHTML();
-
 }
 
 function clientsHTML() {
-    var table = "<table><th>UUID</th>"
-    for (i = 0; i < clients.length; i++) {
-        table = table + "<tr><td>" + clients[i] + "</td></tr>"
+    var table = "<table><th>UUID</th><th>Playlist</th><th>Order</th><th>Active</th>"
+    for (var key in clients) {
+        table = table + "<tr><td>" + clients[key].uuid + "</td>" +
+        "<td>" + clients[key].playlist + "</td>" +
+        "<td>" + clients[key].order + "</td>" +
+        "<td>" + clients[key].connectionEvent + "</td></tr>"
     }
     return table + "</table>";
 }

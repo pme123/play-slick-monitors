@@ -29,7 +29,7 @@ class Locations(tag: Tag) extends Table[Location](tag, Locations.name) {
 
   def uuid = column[String](uuidCol, O.NotNull)
 
-  def addressId = column[Int]("ADDRESS_ID")
+  def addressId = column[Int](addressIdCol, O.NotNull)
 
   def * = (id, uuid, addressId) <>(Location.tupled, Location.unapply)
 

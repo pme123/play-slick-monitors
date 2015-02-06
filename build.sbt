@@ -5,10 +5,10 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.1"
 
 libraryDependencies ++= Seq(
-ws,
+  ws,
   "org.webjars" %% "webjars-play" % "2.3.0",
   "com.typesafe.slick" %% "slick" % "2.1.0",
-"com.typesafe.play" %% "play-slick" % "0.8.0",
+  "com.typesafe.play" %% "play-slick" % "0.8.0",
   "org.postgresql" % "postgresql" % "9.3-1101-jdbc41"
 )
 

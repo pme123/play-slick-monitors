@@ -36,5 +36,8 @@ INSERT INTO "ARTICLE" ("name", "descr", "img", "playlist", "active")
 VALUES ('Zuhause', '-',
         '/assets/images/famous/oberarth_map.png', 'intro', TRUE);
 
+INSERT INTO "ADDRESS" ("ID", "street", "streetNr", "cityZip", "city") VALUES (1, 'Baumweg', '45', 6300, 'Zug');
+INSERT INTO "LOCATION" ("ID", "uuid", "addressId") VALUES (1, 'coop_6300_1', 1);
+INSERT INTO "CLIENT" ("uuid", "order", "playlist", "locationId") VALUES ('client1', 0, 'article', 1);
 
 # --- !Downs
