@@ -20,12 +20,15 @@ object Application extends Controller {
   implicit val articleFormat = Json.format[Article]
   implicit val clientFormat = Json.format[Client]
 
-  def index = DBAction { implicit request =>
-    Ok(views.html.index(articles.list, clients.list))
-  }
 
   def server = DBAction { implicit request =>
     Ok(views.html.server(articles.list, clients.list))
+  }
+
+  def screenwall(locationUUID: String, screenNr: Int) = DBAction { implicit request =>
+    val location: Location = Locations.retrieveByUUID(locationUUID)
+    val selClients = retrieveByLocation(location)
+    Ok(views.html.screenwall(location, selClients.take(Math.min(selClients.size, screenNr))))
   }
 
   def deleteArticle(name: String) = DBAction { implicit request =>
@@ -39,10 +42,6 @@ object Application extends Controller {
     Logger.info("activate article: " + name)
     Articles.updateActiveState(name)
     Ok("Everything worked")
-  }
-
-  def client = DBAction { implicit request =>
-    Ok(views.html.client())
   }
 
   val articleForm = Form(

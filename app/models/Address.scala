@@ -14,7 +14,7 @@ object Addresses extends lifted.TableQuery(new Addresses(_)) {
   val cityCol = "city"
   val addresses = TableQuery[Addresses]
 
-  def findByCityZip(cityZip: Int) = addresses filter (_.cityZip === cityZip)
+  def retrieveByCityZip(cityZip: Int)(implicit session: Session): Address = (addresses filter (_.cityZip === cityZip)).first
 
 }
 

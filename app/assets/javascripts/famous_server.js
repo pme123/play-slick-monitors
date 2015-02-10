@@ -5,8 +5,6 @@ define(function (require, exports, module) {
 
     var ServerView = require('views/ServerView');
 
-    var Surface = require('famous/core/Surface');
-
     var mainContext = Engine.createContext();
     initApp();
 

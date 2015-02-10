@@ -6,6 +6,8 @@ import scala.slick.lifted
 import scala.slick.lifted.TableQuery
 
 object Clients extends lifted.TableQuery(new Clients(_)){
+  val notSetPlaylist = "intro"
+  val notSetOrder = -1
   val name = "CLIENT"
   val uuidCol="uuid"
   val orderCol = "order"
@@ -13,7 +15,10 @@ object Clients extends lifted.TableQuery(new Clients(_)){
   val locationIdCol = "locationId"
   val clients = TableQuery[Clients]
 
-  def findByUUID(uuid:String) = clients filter (_.uuid === uuid)
+  def retrieveByUUID(uuid: String)(implicit session: Session): Client = (clients filter (_.uuid === uuid)).first
+
+  def retrieveByLocation(location: Location)(implicit session: Session): List[Client] = (clients filter (_.locationId === location.id)).list
+
 
 }
 

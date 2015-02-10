@@ -1,4 +1,4 @@
-@(clientUUID: String, order: Int, playlist: String)(implicit request: RequestHeader)
+@()(implicit request: RequestHeader)
 
 @moreScripts = {
     <title>famo.us App</title>
@@ -15,33 +15,33 @@
     <!-- module loader -->
     <script type="text/javascript" src="http://code.famo.us/lib/require.js"></script>
 
+    <script src="@routes.Assets.at("javascripts/famous-map.min.js")" type="text/javascript" charset="utf-8"></script>
+
     <!-- Google Map -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <!-- Open Map -->
+    <!-- Open Map
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-
+-->
     <!-- famous -->
     <link rel="stylesheet" type="text/css" href="http://code.famo.us/famous/0.3.0/famous.css" />
     <script type="text/javascript" src="http://code.famo.us/famous/0.3.0/famous.min.js"></script>
 
     <!-- app code -->
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("../assets/stylesheets/famous.css")' />
-    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("../assets/stylesheets/" + playlist + ".css")' />
 
 
     <script type="text/javascript">
     require.config ( {
     baseUrl : " @routes.Assets.at("javascripts") "
     } ) ;
-    require ([ 'famous_main' ] ) ;
+    require ([ 'famous_map' ] ) ;
     </script>
 }
 
-@main("Client Manager", moreScripts) {
+    @main("Monitor Map", moreScripts) {
 
-    <input type="hidden" id="playlist" value="@playlist"/>
-    <input type="hidden" id="ws-url" value="@routes.WebSockets.clientOrderredPlaySocket(clientUUID, order, playlist).webSocketURL()"/>
+        <input type="hidden" id="ws-url" value="@routes.ServerWebSockets.famousSocket().webSocketURL()"/>
 
     <body>
     </body>

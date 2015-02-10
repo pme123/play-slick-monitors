@@ -16,6 +16,8 @@ fork in Test := false
 
 seq(bintrayResolverSettings: _*)
 
+libraryDependencies += "com.google.maps" % "google-maps-services" % "0.1.5"
+
 libraryDependencies += "org.clapper" %% "grizzled-slf4j" % "1.0.2"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test"

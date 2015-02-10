@@ -3,24 +3,22 @@
 # ~~~~
 
 # Home page
-GET         /                                              controllers.Application.index()
+GET         /                                              controllers.Application.server()
 GET         /server                                        controllers.Application.server()
-GET         /client                                        controllers.Application.client()
 GET         /article/delete/:name                          controllers.Application.deleteArticle(name: String)
 GET         /article/activate/:name                        controllers.Application.activateArticle(name: String)
-GET         /webSocket                                     controllers.WebSockets.socket()
 GET         /serverWebSocket                               controllers.ServerWebSockets.socket()
 GET         /famousServerWebSocket                         controllers.ServerWebSockets.famousSocket()
-GET         /webSocket/:order                              controllers.WebSockets.orderredSocket(order: Int)
-GET         /webSocket/:order/:playlist                    controllers.WebSockets.orderredPlaySocket(order: Int, playlist: String)
-GET         /webSocket/:clientUUID/:order/:playlist        controllers.WebSockets.clientOrderredPlaySocket(clientUUID: String, order: Int, playlist: String)
+GET         /webSocket/:clientUUID/:playlist/:order        controllers.WebSockets.clientSocket(clientUUID: String, playlist: String, order: Int)
 
 # famo.us
-GET         /famous                                        controllers.FamousApp.index()
-GET         /famous/:order                                 controllers.FamousApp.display(order: Int)
-GET         /famous/:playlist/:order                       controllers.FamousApp.displayPlaylist(order: Int, playlist: String)
-GET         /famous/:clientUUID/:playlist/:order           controllers.FamousApp.displayClientPlaylist(clientUUID: String, order: Int, playlist: String)
+GET         /famous/:clientUUID                            controllers.FamousApp.display(clientUUID: String)
+GET         /famous/:clientUUID/:playlist                  controllers.FamousApp.displayPlaylist(clientUUID: String, playlist: String)
+GET         /famous/:clientUUID/:playlist/:order           controllers.FamousApp.displayPlaylistOrdered(clientUUID: String, playlist: String, order: Int)
 GET         /famousserver                                  controllers.FamousApp.server()
+GET         /famousmap                                     controllers.FamousApp.map()
+# screenwall
+GET         /screenwall/:location/:screenNr                controllers.Application.screenwall(location: String, screenNr: Int)
 # WebSocket test
 GET         /echo                                          controllers.EchoWebSockets.index()
 GET         /echoWebSocket                                 controllers.EchoWebSockets.echo()
@@ -31,9 +29,13 @@ POST        /insertArticle                                 controllers.Applicati
 GET         /articles/all                                  controllers.Application.jsonFindAllArticles
 GET         /clients/all                                   controllers.Application.jsonFindAllClients
 
+# Admin
+GET         /admin/setupDB                                 controllers.AdminApp.setupDB()
+
 # Home page
 POST        /json/insert                                   controllers.Application.jsonInsert
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                  controllers.Assets.at(path="/public", file)
+
 

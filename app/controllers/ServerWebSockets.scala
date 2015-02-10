@@ -2,8 +2,8 @@ package controllers
 
 import java.util.UUID
 
-import actors.EventPublisher
 import actors.messages._
+import actors.{EventPublisher, ServerEventPublisher}
 import akka.util.Timeout
 import models._
 import play.api.Logger
@@ -56,7 +56,6 @@ object ServerWebSockets extends Controller {
         unhandled(msg)
     }
 
-
     @throws(classOf[Exception])
     override def preStart(): Unit = {
       super.preStart()
@@ -80,12 +79,12 @@ object ServerWebSockets extends Controller {
     def insertAdminServer(adminServer: AdminServer) =
       Connection.databaseObject().withSession { implicit session: Session =>
         adminServers.insert(adminServer)
-        Redirect(routes.Application.index())
+        Redirect(routes.Application.server())
       }
 
     def removeAdminServer(uuid: String) = Connection.databaseObject().withSession { implicit session: Session =>
       (adminServers filter (_.uuid === uuid)).delete
-      Redirect(routes.Application.index())
+      Redirect(routes.Application.server())
     }
   }
 

@@ -1,0 +1,38 @@
+@(location: Location, clients: List[Client])(implicit request: RequestHeader)
+
+@moreScripts = {
+}
+
+
+@main("Simple Signage: Server", moreScripts) {
+    <input type="hidden" id="ws-url" value="@routes.ServerWebSockets.socket().webSocketURL()"/>
+
+    <header class="top" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+        <meta charset="UTF-8">
+        <title>screenFOODnet Screen Wall for: @location.uuid</title>
+        <STYLE type="text/css">
+        html {
+        overflow-y : hidden ;
+        overflow-x : hidden ;
+        }
+
+        body, iframe {
+        margin : 0 px ;
+        padding : 1 px ;
+        }
+        </STYLE>
+        <SCRIPT Language="JavaScript">
+        <!--
+
+        //-->
+        </SCRIPT>
+    </header>
+    <section class="center">
+        <article class="float-left">
+        @for(client <- clients) {
+            <iframe src='http://localhost:9000/famous/@client.uuid/@client.playlist/@client.order' frameborder='0' width='380' height='534'></iframe>
+
+        }
+        </article>
+    </section>
+}

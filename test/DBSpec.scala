@@ -57,11 +57,11 @@ class DBSpec extends Specification {
         locations.filterNot(_.uuid === "x").delete
         val cityZip: Int = 6000
         addresses.map(a => (a.street, a.streetNr, a.cityZip, a.city)).insert(("Seeweg", "23b", cityZip, "Luzern"))
-        val address = Addresses.findByCityZip(cityZip).first
+        val address = Addresses.retrieveByCityZip(cityZip)
         address.cityZip must beEqualTo(cityZip)
         val locationUUID: String = "City Mall Luzern"
         locations.map(l => (l.uuid, l.addressId)).insert(locationUUID, address.id)
-        val location = Locations.findByUUID(locationUUID).first
+        val location = Locations.retrieveByUUID(locationUUID)
         location.uuid must beEqualTo(locationUUID)
 
       }

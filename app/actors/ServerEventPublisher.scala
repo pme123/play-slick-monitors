@@ -1,6 +1,6 @@
-package actors.messages
+package actors
 
-import actors.EventPublisher
+import actors.messages._
 import akka.actor.{Actor, ActorRef, Props}
 import models._
 import play.api.Logger
@@ -19,6 +19,12 @@ object ServerEventPublisher {
     Clients.clients.list.map(c => c.uuid ->(c, false)).toMap
   }
 
+  lazy val locationMap: Map[Location, List[Client]] = Connection.databaseObject().withSession { implicit session: Session =>
+    val locations: List[Location] = Locations.locations.list
+
+    def findClients(location: Location): List[Client] = (Clients.clients filter (_.locationId === location.id)).list
+    locations.map(l => l -> findClients(l)).toMap[Location, List[Client]]
+  }
   var clientSessionMap: Map[String, ActorRef] = Map.empty
   var adminServers: Map[AdminServer, ActorRef] = Map.empty
 
@@ -27,7 +33,23 @@ object ServerEventPublisher {
 
 class ServerEventPublisher() extends Actor {
 
-  import actors.messages.ServerEventPublisher._
+  import actors.ServerEventPublisher._
+
+
+  def evalLocationStatus(clients: List[Client]): LocationStatus = {
+    type MissingLoaded = (Boolean, Boolean)
+    val result: MissingLoaded = clients.foldRight((true, true))((client, result) => {
+      val active: Active = clientMap(client.uuid)._2
+      val resultA = if (active) false else result._1
+      val resultB = if (!active) false else result._2
+      (resultA, resultB)
+    })
+    result match {
+      case (true, _) => MissingAllClients
+      case (false, false) => MissingClients
+      case (false, true) => LoadedClients
+    }
+  }
 
   override def receive: Receive = {
     case NewConnectionEvent(client, out) =>
@@ -37,6 +59,7 @@ class ServerEventPublisher() extends Actor {
     case NewServerConnectionEvent(adminServer, out) =>
       adminServers = adminServers + (adminServer -> out)
       sendAllClients(out)
+      for (location <- locationMap.keys) sendLocation(out, location)
       Logger.info("S: New AdminServer connected " + out + " - " + adminServer)
     case CloseServerConnectionEvent(adminServer) =>
       adminServers = adminServers - adminServer
@@ -46,6 +69,15 @@ class ServerEventPublisher() extends Actor {
       unhandled(msg)
   }
 
+
+  def sendLocation(out: ActorRef, location: Location): Unit = {
+    out ! new JsonLocation(location, evalLocationStatus(locationMap(location))).json
+  }
+
+  def sendLocationForClient(out: ActorRef, client: Client): Unit = Connection.databaseObject().withSession { implicit session: Session =>
+    val location: Location = Locations.locations.filter(_.id === client.locationId).first
+    for (out <- adminServers.values) (sendLocation(out, location))
+  }
 
   def handleAddedClient(client: Client, out: ActorRef): Unit = {
     Logger.info("S: handleAddedClient msg: " + client)
@@ -59,6 +91,7 @@ class ServerEventPublisher() extends Actor {
         clientEventPublisher ! NewConnectionEvent(client, out)
         clientMap = clientMap + (client.uuid ->(client, true))
         clientSessionMap = clientSessionMap + (client.uuid -> out)
+        sendLocationForClient(out, client)
         sendToAllServer(client, ConnectionAdded)
         Logger.info("S: New browser connected " + out + " - " + client)
       }
@@ -71,8 +104,9 @@ class ServerEventPublisher() extends Actor {
     Logger.info("S: out " + out + "is " + clientSessionMap.get(client.uuid))
     if (clientSessionMap.contains(client.uuid) && clientSessionMap(client.uuid).equals(out)) {
       clientMap = clientMap + (client.uuid ->(client, false))
-      clientSessionMap = clientSessionMap - (client.uuid)
+      clientSessionMap = clientSessionMap - client.uuid
       clientEventPublisher ! CloseConnectionEvent(client, out)
+      sendLocationForClient(out, client)
       sendToAllServer(client, ConnectionRemoved)
     }
     Logger.info("S: Browser " + client + "is disconnected")

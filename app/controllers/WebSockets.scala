@@ -1,8 +1,8 @@
 package controllers
 
-import actors.messages.{CloseConnectionEvent, JsonNoClient, NewConnectionEvent, ServerEventPublisher}
+import actors.ServerEventPublisher
+import actors.messages.{CloseConnectionEvent, JsonNoClient, NewConnectionEvent}
 import akka.util.Timeout
-import conf.ApplicationConf._
 import models._
 import play.api.Logger
 import play.api.libs.json.JsValue
@@ -21,19 +21,7 @@ object WebSockets extends Controller {
   import play.api.Play.current
   import play.api.mvc._
 
-  def socket(): WebSocket[String, JsValue] = orderredSocket(0)
-
-  def orderredSocket(order: Int): WebSocket[String, JsValue] = {
-    orderredPlaySocket(order, DEFAULT_PLAY)
-  }
-
-  def orderredPlaySocket(order: Int, playlist: String): WebSocket[String, JsValue] = {
-    WebSocket.acceptWithActor[String, JsValue] {
-      implicit request => out => WebSocketActor.props(out, DEFAULT_CLIENT, order, playlist)
-    }
-  }
-
-  def clientOrderredPlaySocket(clientUUID: String, order: Int, playlist: String): WebSocket[String, JsValue] = {
+  def clientSocket(clientUUID: String, playlist: String, order: Int): WebSocket[String, JsValue] = {
     WebSocket.acceptWithActor[String, JsValue] {
       implicit request => out => WebSocketActor.props(out, clientUUID, order, playlist)
     }
@@ -65,17 +53,19 @@ object WebSockets extends Controller {
       Logger.info("Webactor started: " + clientUUID + " - " + out)
       for (client <- retrieveClient(clientUUID)) {
         Logger.info("after client insert: " + clientUUID)
-        serverEventPublisher ! NewConnectionEvent(client, out)
+        val playlistTmp = if (playlist != Clients.notSetPlaylist) playlist else client.playlist
+        val orderTmp = if (order != Clients.notSetOrder) order else client.order
+        serverEventPublisher ! NewConnectionEvent(client.copy(order = orderTmp, playlist = playlistTmp), out)
       }
     }
 
     @throws(classOf[Exception])
     override def postStop(): Unit = {
-      for (client <- retrieveClient(clientUUID)) (serverEventPublisher ! CloseConnectionEvent(client, out))
+      for (client <- retrieveClient(clientUUID)) serverEventPublisher ! CloseConnectionEvent(client, out)
     }
 
     private def retrieveClient(clientUUID: String): Option[Client] = Connection.databaseObject().withSession { implicit session: Session =>
-      val clientQuery = Clients.findByUUID(clientUUID)
+      val clientQuery = Clients.clients filter (_.uuid === clientUUID)
       if (clientQuery.exists.run) {
         val client: Clients#TableElementType = clientQuery.first
         val overrideClientOrderPlaylist: Client = client.copy(order = order, playlist = playlist)
