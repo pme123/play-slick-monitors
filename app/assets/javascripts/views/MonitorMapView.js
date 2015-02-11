@@ -130,10 +130,22 @@ define(function (require, exports, module) {
             var addedModifier = renderable.add(marker.content.photoModifier);
             addedModifier.add(marker.content.photo);
             markerMap[location.uuid] = marker;
+            marker.content.photo.on('click', _showClients.bind(this));
+
+            function _showClients() {
+                console.log("clicked--" + location);
+                mainContext.add(new Surface({
+                    content: location.uuid
+
+                }))
+            };
+
         }
         return marker;
     }
-
+    MonitorMapView.prototype.addClient = function (json) {
+        console.log("addClient: " + json);
+    }
     // Default options for ServerView class
     MonitorMapView.DEFAULT_OPTIONS = {};
 

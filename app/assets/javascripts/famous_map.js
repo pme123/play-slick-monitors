@@ -42,13 +42,13 @@ define(function (require) {
     function _addContent() {
         // instantiates ServerView with our url data
         this.monitorMapView = new MonitorMapView({});
-        mainContext.add(this.serverView);
-        console.log("_addContent: " + this.serverView);
+        mainContext.add(this.monitorMapView);
+        console.log("_addContent: " + this.monitorMapView);
 
     }
 
     function _addWebSocket() {
-        console.log("_addWebSocket: " + this.serverView);
+        console.log("_addWebSocket: " + this.monitorMapView);
         if ("WebSocket" in window) {
             console.log("WebSocket is supported by your Browser!");
             // Let us open a web socket
@@ -57,11 +57,13 @@ define(function (require) {
                 console.log("WebSocket open ...");
             };
             this.ws.onmessage = function (evt) {
-                console.log("Message is received..." + this.serverView);
 
                 var json = JSON.parse(evt.data);
+                console.log("Message is received..." + json["messageType"]);
                 if (json["messageType"] == "location") {
                     MonitorMapView.prototype.showLocation(json);
+                } else if (json["messageType"] == "client") {
+                    MonitorMapView.prototype.addClient(json);
                 }
             };
             this.ws.onclose = function () {

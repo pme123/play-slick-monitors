@@ -3,46 +3,21 @@
 
 # --- !Ups
 
-CREATE TABLE "ADDRESS" (
-  "ID"       SERIAL       NOT NULL PRIMARY KEY,
-  "street"   VARCHAR(254) NOT NULL,
-  "streetNr" VARCHAR(254) NOT NULL,
-  "cityZip"  INTEGER      NOT NULL,
-  "city"     VARCHAR(254) NOT NULL
-);
-CREATE TABLE "ADMIN_SERVER" (
-  "uuid" VARCHAR(254) NOT NULL PRIMARY KEY
-);
-CREATE TABLE "ARTICLE" (
-  "name"     VARCHAR(254) NOT NULL PRIMARY KEY,
-  "descr"    VARCHAR(254) NOT NULL,
-  "img"      VARCHAR(254) NOT NULL,
-  "playlist" VARCHAR(254) NOT NULL,
-  "active"   BOOLEAN      NOT NULL
-);
-CREATE TABLE "CLIENT" (
-  "uuid"       VARCHAR(254) NOT NULL PRIMARY KEY,
-  "order"      INTEGER      NOT NULL,
-  "playlist"   VARCHAR(254) NOT NULL,
-  "locationId" INTEGER      NOT NULL
-);
-CREATE TABLE "LOCATION" (
-  "ID"        SERIAL           NOT NULL PRIMARY KEY,
-  "uuid"      VARCHAR(254)     NOT NULL,
-  "latitude"  DOUBLE PRECISION NOT NULL,
-  "longitude" DOUBLE PRECISION NOT NULL,
-  "addressId" INTEGER          NOT NULL
-);
-ALTER TABLE "CLIENT" ADD CONSTRAINT "LOCATION" FOREIGN KEY ("locationId") REFERENCES "LOCATION" ("ID") ON UPDATE NO ACTION ON DELETE NO ACTION;
-ALTER TABLE "LOCATION" ADD CONSTRAINT "ADDRESS" FOREIGN KEY ("addressId") REFERENCES "ADDRESS" ("ID") ON UPDATE NO ACTION ON DELETE NO ACTION;
+create table "ADDRESS" ("ID" SERIAL NOT NULL PRIMARY KEY,"street" VARCHAR(254) NOT NULL,"streetNr" VARCHAR(254) NOT NULL,"cityZip" INTEGER NOT NULL,"city" VARCHAR(254) NOT NULL);
+create table "ADMIN_SERVER" ("uuid" VARCHAR(254) NOT NULL PRIMARY KEY);
+create table "ARTICLE" ("name" VARCHAR(254) NOT NULL PRIMARY KEY,"descr" VARCHAR(254) NOT NULL,"img" VARCHAR(254) NOT NULL,"playlist" VARCHAR(254) NOT NULL,"active" BOOLEAN NOT NULL);
+create table "CLIENT" ("uuid" VARCHAR(254) NOT NULL PRIMARY KEY,"order" INTEGER NOT NULL,"playlist" VARCHAR(254) NOT NULL,"locationId" INTEGER NOT NULL);
+create table "LOCATION" ("ID" SERIAL NOT NULL PRIMARY KEY,"uuid" VARCHAR(254) NOT NULL,"latitude" DOUBLE PRECISION NOT NULL,"longitude" DOUBLE PRECISION NOT NULL,"addressId" INTEGER NOT NULL);
+alter table "CLIENT" add constraint "LOCATION" foreign key("locationId") references "LOCATION"("ID") on update NO ACTION on delete NO ACTION;
+alter table "LOCATION" add constraint "ADDRESS" foreign key("addressId") references "ADDRESS"("ID") on update NO ACTION on delete NO ACTION;
 
 # --- !Downs
 
-ALTER TABLE "LOCATION" DROP CONSTRAINT "ADDRESS";
-ALTER TABLE "CLIENT" DROP CONSTRAINT "LOCATION";
-DROP TABLE "LOCATION";
+alter table "LOCATION" drop constraint "ADDRESS";
+alter table "CLIENT" drop constraint "LOCATION";
+drop table "LOCATION";
 drop table "CLIENT";
 drop table "ARTICLE";
 drop table "ADMIN_SERVER";
-DROP TABLE "ADDRESS";
+drop table "ADDRESS";
 
