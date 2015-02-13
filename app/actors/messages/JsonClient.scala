@@ -12,6 +12,7 @@ case class JsonClient(client: Client, connectionEventType: ConnectionEventType) 
       "connectionEvent" -> connectionEventType.name,
       "uuid" -> client.uuid,
       "order" -> client.order,
+      "location" -> client.locationId,
       "playlist" -> client.playlist
     )
 }

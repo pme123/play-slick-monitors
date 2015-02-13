@@ -81,3 +81,10 @@ body {
     font-family: Trebuchet, sans-serif;
 }
 
+.clientPanel {
+    background-color: #777;
+    z-index: 3;
+    /* makes the surface invisible to clicks */
+    pointer-events: none;
+}
+

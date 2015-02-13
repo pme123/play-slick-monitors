@@ -58,7 +58,7 @@ define(function (require, exports, module) {
     }
 
     function _addHeader() {
-        var headerView = new HeaderView({})
+        var headerView = new HeaderView({});
         layout.header.add(headerView);
     }
 

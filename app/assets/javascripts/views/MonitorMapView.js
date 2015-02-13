@@ -2,10 +2,10 @@
 
 // define this module in Require.JS
 define(function (require, exports, module) {
-    var pinIconPrefix = "assets/images/pins/ball_"
-    var pinIconPostfix = ".png"
-    var latitude = 46.9
-    var longitude = 8.3072438
+    var pinIconPrefix = "assets/images/pins/ball_";
+    var pinIconPostfix = ".png";
+    var latitude = 46.9;
+    var longitude = 8.3072438;
     var zoom = 8;
     var center = {lat: latitude, lng: longitude};
 
@@ -27,16 +27,18 @@ define(function (require, exports, module) {
     var MapPositionTransitionable = require('famous-map/MapPositionTransitionable');
     var MapTransition = require('famous-map/MapTransition');
 
+    var ClientPlayerView = ('views/ClientPlayerView');
+    var PlayerClientView = require('views/PlayerClientView');
+
     var mainContext = Engine.createContext();
     var mapView;
+    var playerClientView;
+
     // Constructor function for our ServerView class
     function MonitorMapView() {
         // Determine map-type
         var mapType = MapView.MapType.GOOGLEMAPS;
-
-        //
         // Create map-view
-        //
         mapView = new MapView({
             type: mapType,
             mapOptions: {
@@ -49,8 +51,10 @@ define(function (require, exports, module) {
             }
         });
         mainContext.add(mapView);
+        // PlayerClientView
 
-
+        playerClientView = new PlayerClientView();
+        mainContext.add(playerClientView);
     }
 
 
@@ -92,13 +96,13 @@ define(function (require, exports, module) {
         }, 200);
     };
 
-    var markerMap = {}
+    var markerMap = {};
 
     /**
      * Creates a photo-marker
      */
     function _createPhotoMarker(location) {
-        var marker = markerMap[location.uuid]
+        var marker = markerMap[location.uuid];
         if (marker == undefined) {
             var randomAngle = (Math.PI / 180) * (15 - (Math.random() * 30));
             marker = {
@@ -138,14 +142,17 @@ define(function (require, exports, module) {
                     content: location.uuid
 
                 }))
-            };
+            }
 
         }
         return marker;
     }
+
     MonitorMapView.prototype.addClient = function (json) {
         console.log("addClient: " + json);
-    }
+        playerClientView.addClient(json);
+    };
+
     // Default options for ServerView class
     MonitorMapView.DEFAULT_OPTIONS = {};
 
