@@ -116,7 +116,7 @@ define(function (require, exports, module) {
                 }),
                 content: {
                     modifier: new Modifier({
-                        size: [72, 72],
+                        size: [36, 36],
                         transform: Transform.rotateZ(randomAngle)
                     }),
                     photoModifier: new Modifier({
@@ -134,14 +134,10 @@ define(function (require, exports, module) {
             var addedModifier = renderable.add(marker.content.photoModifier);
             addedModifier.add(marker.content.photo);
             markerMap[location.uuid] = marker;
-            marker.content.photo.on('click', _showClients.bind(this));
+            marker.content.photo.on('click', _showLocation.bind(this));
 
-            function _showClients() {
-                console.log("clicked--" + location);
-                mainContext.add(new Surface({
-                    content: location.uuid
-
-                }))
+            function _showLocation() {
+                playerClientView.showLocation(location)
             }
 
         }
@@ -149,7 +145,6 @@ define(function (require, exports, module) {
     }
 
     MonitorMapView.prototype.addClient = function (json) {
-        console.log("addClient: " + json);
         playerClientView.addClient(json);
     };
 

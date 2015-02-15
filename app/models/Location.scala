@@ -7,7 +7,7 @@ import scala.slick.lifted.TableQuery
 
 object Locations extends lifted.TableQuery(new Locations(_)) {
   val name = "LOCATION"
-  val idCol = "ID"
+  val idCol = "id"
   val uuidCol = "uuid"
   val latitudeCol = "latitude"
   val longitudeCol = "longitude"

@@ -7,7 +7,7 @@ import scala.slick.lifted.TableQuery
 
 object Addresses extends lifted.TableQuery(new Addresses(_)) {
   val name = "ADDRESS"
-  val idCol = "ID"
+  val idCol = "id"
   val streetCol = "street"
   val streetNrCol = "streetNr"
   val cityZipCol = "cityZip"

@@ -8,7 +8,9 @@ define(function (require, exports, module) {
     var Surface = require('famous/core/Surface');
     var Transform = require('famous/core/Transform');
     var StateModifier = require('famous/modifiers/StateModifier');
-
+    var GridLayout = require('famous/views/GridLayout');
+    var cols = 1;
+    var sequence = [];
     // Constructor function for our EmptyView class
     function PlayerClientView() {
 
@@ -17,12 +19,23 @@ define(function (require, exports, module) {
         this.rootModifier = new StateModifier({
             align: [1.0, 1.0],
             origin: [1.0, 1.0],
-            opacity: 0.5,
-            size: [200,]
+            opacity: 0.8,
+            size: [200]
         });
+
 
         // saving a reference to the new node
         this.mainNode = this.add(this.rootModifier);
+        var layout = new GridLayout({
+            dimensions: [cols, 10],
+            gutterSize: [4, 4]
+        });
+        layout.sequenceFrom(sequence);
+        this.mainNode.add(layout);
+
+        sequence.push(new Surface({
+            content: "hello"
+        }));
 
         _createBackground.call(this);
         // _createPhoto.call(this);
@@ -49,18 +62,33 @@ define(function (require, exports, module) {
 
     }
 
-    var locationMap = {};
+    PlayerClientView.prototype.locationMap = {};
     PlayerClientView.prototype.addClient = function (json) {
-        console.log("addClient: " + json);
-        var clientMap = locationMap[json.location];
+        console.log("addClient: " + json.uuid);
+        var clientMap = PlayerClientView.prototype.locationMap[json.location];
         if (clientMap == undefined) {
             clientMap = {};
-            clientMap[json.uuid] = json;
-            locationMap[json.location] = clientMap
+            PlayerClientView.prototype.locationMap[json.location] = clientMap
         }
-        background.setContent(json)
+        clientMap[json.uuid] = json;
+        console.log("addClient: " + PlayerClientView.prototype.locationMap[json.location][json.uuid].uuid);
     };
 
+    PlayerClientView.prototype.showLocation = function (json) {
+        var clientMap = PlayerClientView.prototype.locationMap[json.id];
+        console.log("clicked--" + json.uuid + "::" + PlayerClientView.prototype.locationMap[json.id]);
+        sequence.length = 0;
+        var index = 0;
+        for (clientUUID in clientMap) {
+            var client = clientMap[clientUUID];
+            sequence.push(new Surface({
+                content: client.uuid
+            }));
+            console.log("location: " + json.uuid + " -client: " + clientUUID);
+        }
+        //  background.setContent(json.uuid)
+
+    };
     // Define your helper functions and prototype methods here
 
     module.exports = PlayerClientView;

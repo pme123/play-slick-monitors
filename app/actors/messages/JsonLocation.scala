@@ -12,6 +12,7 @@ case class JsonLocation(location: Location, locationStatus: LocationStatus) exte
     Json.obj(
       "messageType" -> "location",
       "locationStatus" -> locationStatus.name,
+      idCol -> location.id,
       uuidCol -> location.uuid,
       latitudeCol -> location.latitude,
       longitudeCol -> location.longitude,
