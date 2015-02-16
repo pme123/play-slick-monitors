@@ -81,10 +81,33 @@ body {
     font-family: Trebuchet, sans-serif;
 }
 
-.clientPanel {
-    background-color: #777;
-    z-index: 3;
+.locationPanel {
+    background-color: #ccc;
+    z-index: 2;
     /* makes the surface invisible to clicks */
     pointer-events: none;
+}
+
+.clientPanel {
+    background-color: #ccc;
+    font-size: 11pt;
+    font-weight: bold;
+    z-index: 3;
+    padding: 3px 6px;
+    /* makes the surface invisible to clicks */
+    pointer-events: none;
+}
+
+.clientREMOVED {
+    color: #f00;
+}
+
+.clientADDED {
+    color: #01af40;
+}
+
+.clientPanelSubtext {
+    font-size: 8pt;
+    padding: 25px 6px;
 }
 

@@ -1,7 +1,7 @@
 famous-flex
 ==========
 
-Flexible scrollview and layout-controller for famo.us.
+Animatable layouts, FlexScrollView & widgets for famo.us.
 
 ![Screenshot](screenshot.gif)
 
@@ -15,7 +15,8 @@ of renderables using a `GridLayout`, and change that into a `ListLayout`. When u
 
 - [famous-flex-demo](https://rawgit.com/IjzerenHein/famous-flex-demo/master/dist/index.html) ([source](https://github.com/IjzerenHein/famous-flex-demo))
 - [Chat demo](https://rawgit.com/IjzerenHein/famous-flex-chat/master/dist/index.html) ([source](https://github.com/IjzerenHein/famous-flex-chat))
-
+- [DatePicker demo](https://rawgit.com/IjzerenHein/famous-flex-datepicker/master/dist/index.html) ([source](https://github.com/IjzerenHein/famous-flex-datepicker))
+- [TabBar demo](https://rawgit.com/IjzerenHein/famous-flex-tabbar/master/dist/index.html) ([source](https://github.com/IjzerenHein/famous-flex-tabbar))
 
 ### Getting started
 - [Installation](#installation)
@@ -27,18 +28,25 @@ of renderables using a `GridLayout`, and change that into a `ListLayout`. When u
 - [Layout literals](#layout-literals)
 - [Layout helpers](#layout-helpers)
 
-### [FlexScrollView](#flex-scrollview)
-- [Tutorial](tutorials/FlexScrollView.md)
+### Views / widgets
+- [LayoutController](docs/LayoutController.md)
+- [ScrollController](docs/ScrollController.md)
+- [FlexScrollView](tutorials/FlexScrollView.md)
+- [DatePicker](https://github.com/IjzerenHein/famous-flex-datepicker/blob/master/tutorial/DatePicker.md)
+- [TabBar](https://github.com/IjzerenHein/famous-flex-tabbar/blob/master/tutorial/TabBar.md)
 
 ### [Layouts](#standard-layouts)
 - [GridLayout](docs/layouts/GridLayout.md)
-- [ListLayout](docs/layouts/ListLayout.md)
-- [CollectionLayout](docs/layouts/CollectionLayout.md)
+- [ProportionalLayout](docs/layouts/ProportionalLayout.md)
 - [HeaderFooterLayout](docs/layouts/HeaderFooterLayout.md)
 - [NavBarLayout](docs/layouts/NavBarLayout.md)
+- [TabBarLayout](docs/layouts/TabBarLayout.md)
+- [ListLayout](docs/layouts/ListLayout.md) *(scrollable)*	
+- [CollectionLayout](docs/layouts/CollectionLayout.md) *(scrollable)*
+- [WheelLayout](docs/layouts/WheelLayout.md) *(scrollable)*
 
 ### Resources
-- [API reference](#api-reference)
+- [Documentation](#documentation)
 - [Roadmap](#roadmap)
 
 
@@ -227,43 +235,33 @@ Layout helpers are special classes that simplify writing layout functions.
 |[LayoutDockHelper](docs/helpers/LayoutDockHelper.md)|`dock`|Layout renderables using docking semantics.|
 
 
-## Flex ScrollView
-
-FlexScrollView is a flexible and highly performant scroll-view for famo.us supporting
-custom layouts. Key features:
-- pull to refresh
-- sticky-headers
-- smooth flowing when inserting/removing re-sizing
-- multi-cell layouts (CollectionLayout)
-- margins & spacing
-- bottom/right alignment
-- all the good stuff you expect from a scrollview and more ;)
-
-[FlexScrollView](docs/FlexScrollView.md) is based on [ScrollController](docs/ScrollController.md) which implements the core functionality of the scroll-view, which is turn is inherited from [LayoutController](docs/LayoutController.md).
-
-### For a full overview, take the [FlexScrollView Tutorial](tutorials/FlexScrollView.md)
-
-
 ## Standard layouts
 
 |Layout|DataSource|Scrollable|Description|
 |---|---|---|---|
 |[GridLayout](docs/layouts/GridLayout.md)|ViewSequence / Array|No|Grid-layout with fixed number of rows & columns.|
-|[ListLayout](docs/layouts/ListLayout.md)|ViewSequence / Array|Yes|List layout with margins, spacing and optionally sticky headers.|
-|[CollectionLayout](docs/layouts/CollectionLayout.md)|ViewSequence / Array|Yes|Lays out renderables with a specific width & height.|
+|[ProportionalLayout](docs/layouts/ProportionalLayout.md)|ViewSequence / Array|No|Lays out renderables sequentially and sizes them proportionally.|
 |[HeaderFooterLayout](docs/layouts/HeaderFooterLayout.md)|Id-based|No|Layout containing a top-header, bottom- footer and content.|
 |[NavBarLayout](docs/layouts/NavBarLayout.md)|Id-based|No|Layout containing one or more left and right items and a title.|
+|[TabBarLayout](docs/layouts/TabBarLayout.md)|Id-based|No|Tab-bar layout.|
+|*Scrollable layouts:*|
+|[ListLayout](docs/layouts/ListLayout.md)|ViewSequence / Array|Yes|List layout with margins, spacing and optionally sticky headers.|
+|[CollectionLayout](docs/layouts/CollectionLayout.md)|ViewSequence / Array|Yes|Lays out renderables with a specific width & height.|
+|[WheelLayout](docs/layouts/WheelLayout.md)|ViewSequence / Array|Yes|Lays out renderables in a wheel (slot-machine) formation.|
 
 
-## API reference
+## Documentation
 
 |Class|Description|
 |---|---|
 |[LayoutController](docs/LayoutController.md)|Lays out renderables and optionally animates between layout states.|
 |[ScrollController](docs/ScrollController.md)|Scrollable LayoutController (base class for FlexScrollView).|
-|[FlexScrollView](docs/FlexScrollView.md)|Flexible scroll-view with pull-to-refresh, margins & spacing and more good stuff.|
+|[FlexScrollView](tutorials/FlexScrollView.md)|Flexible scroll-view with pull-to-refresh, margins & spacing and more good stuff.|
+|[DatePicker](https://github.com/IjzerenHein/famous-flex-datepicker/blob/master/tutorial/DatePicker.md)|Date/time picker wheel.|
+|[TabBar](https://github.com/IjzerenHein/famous-flex-tabbar/blob/master/tutorial/TabBar.md)|TabBar widget.|
 |[LayoutContext](docs/LayoutContext.md)|Context used for writing layout-functions.|
 |[LayoutUtility](docs/LayoutUtility.md)|Utility class containing helper functions.|
+|[VirtualViewSequence](docs/VirtualViewSequence.md)|Infinite view-sequence which uses a factory delegate to create renderables.|
 
 
 ## Roadmap
@@ -274,9 +272,10 @@ can be. But to do this, I need your support and feedback. Let me know which of
 features below are most important to you, by leaving a comment in the corresponding
 issue.
 
-- [Effects](https://github.com/IjzerenHein/famous-flex/issues/2) (Apply after-effects on the renderables)
 - [AutoLayout](https://github.com/IjzerenHein/famous-flex/issues/3) (Cassowary constraints)
 - [Drag & drop](https://github.com/IjzerenHein/famous-flex/issues/5) (Drag & drop renderables in a layout)
+- [New widgets](https://github.com/IjzerenHein/famous-flex/issues/49) (Suggestions for new widgets)
+- [New Layouts](https://github.com/IjzerenHein/famous-flex/issues/50) (Suggestions for new layouts)
 
 
 ## Contribute
@@ -288,6 +287,6 @@ and give it a star.
 ## Contact
 - 	@IjzerenHein
 - 	http://www.gloey.nl
-- 	hrutjes@gmail.com
+- 	hrutjes@gmail.com (for hire)
 
-© 2014 - Hein Rutjes
+© 2014 - 2015 Hein Rutjes

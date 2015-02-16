@@ -1,0 +1,72 @@
+{
+  "name": "famous-map",
+  "version": "0.0.9",
+  "homepage": "https://github.com/IjzerenHein/famous-map",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IjzerenHein/famous-map.git"
+  },
+  "browserify": {
+    "transform": [
+      "deamdify",
+      "famousify",
+      "brfs"
+    ]
+  },
+  "author": {
+    "name": "Hein Rutjes",
+    "email": "hrutjes@gmail.com"
+  },
+  "description": "Map integration for Famo.us (google-maps & leaflet)",
+  "keywords": [
+    "famo.us",
+    "famous",
+    "famousmap",
+    "google.maps",
+    "map",
+    "maps",
+    "leaflet",
+    "leafletjs",
+    "openstreetmap",
+    "mapbox"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/IjzerenHein/famous-map/blob/master/LICENSE"
+    }
+  ],
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/IjzerenHein/famous-map/issues"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "brfs": "latest",
+    "browserify": "latest",
+    "deamdify": "latest",
+    "famousify": "latest",
+    "grunt": "latest",
+    "grunt-eslint": "latest",
+    "grunt-jscs": "latest",
+    "grunt-contrib-requirejs": "latest",
+    "grunt-jsdoc-to-markdown": "latest"
+  },
+  "files": [
+    "MapModifier.js",
+    "MapStateModifier.js",
+    "MapPositionTransitionable.js",
+    "MapTransition.js",
+    "MapUtility.js",
+    "MapView.js",
+    "LICENSE"
+  ],
+  "readme": "famous-map\r\n==========\r\n\r\nMap component for Famo.us, supporting the following map-providers:\r\n\r\n- [Google Maps](https://developers.google.com/maps/documentation)\r\n- [Leaflet.js](http://leafletjs.com) (OpenStreetMap)\r\n\r\nFamous-map makes it possible for adding a map-component to the famo.us render-tree. Additionally, famous transitions can be used to pan the map and modifiers can be used to sync the position of renderables with a geographical position.\r\n\r\n## Demos\r\n\r\n- [photo animation demo](https://rawgit.com/IjzerenHein/famous-map/master/examples/photos/index.html)\r\n- [eindhoven demo](https://rawgit.com/IjzerenHein/famous-map/master/examples/demo/index.html)\r\n- [nyan-cat scrolling demo](https://rawgit.com/IjzerenHein/famous-map/master/examples/nyan-cat/index.html)\r\n\r\n*note: Hit refresh if the demo doesn't load properly. GitHub sometimes rejects loading famous-map.min.js the first time, but it always loads the next time :?*\r\n\r\n\r\n## Getting started\r\n\r\nInstall using bower or npm:\r\n\r\n\tbower install famous-map\r\n\r\n    npm install famous-map\r\n\r\n\r\n### Google Maps\r\n\r\nInclude google-maps in the html file:\r\n\r\n```html\r\n<head>\r\n    <script type=\"text/javascript\" src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\"></script>\r\n</head>\r\n```\r\n\r\nCreate a google-maps view:\r\n\r\n```javascript\r\nvar MapView = require('famous-map/MapView');\r\n\r\nvar mapView = new MapView({\r\n\ttype: MapView.MapType.GOOGLEMAPS,\r\n    mapOptions: {\r\n        zoom: 3,\r\n        center: {lat: 51.4484855, lng: 5.451478},\r\n        mapTypeId: google.maps.MapTypeId.TERRAIN\r\n    }\r\n});\r\nthis.add(mapView);\r\n\r\n// Wait for the map to load and initialize\r\nmapView.on('load', function () {\r\n\r\n    // Move across the globe and zoom-in when done\r\n    mapView.setPosition(\r\n        {lat: 51.4484855, lng: 5.451478},\r\n        { duration: 5000 },\r\n        function () {\r\n            mapView.getMap().setZoom(7);\r\n        }\r\n    );\r\n}.bind(this));\r\n```\r\n\r\n### Leaflet\r\n\r\nInclude leaflet in the html file:\r\n\r\n```html\r\n<head>\r\n\t<link rel=\"stylesheet\" href=\"http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css\" />\r\n    <script src=\"http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js\"></script>\r\n</head>\r\n```\r\n\r\nCreate a leaflet map:\r\n\r\n```javascript\r\nvar MapView = require('famous-map/MapView');\r\n\r\nvar mapView = new MapView({\r\n\ttype: MapView.MapType.LEAFLET,\r\n    mapOptions: {\r\n        zoom: 3,\r\n        center: {lat: 51.4484855, lng: 5.451478}\r\n    }\r\n});\r\nthis.add(mapView);\r\n\r\n// Wait for the map to load and initialize\r\nmapView.on('load', function () {\r\n\r\n    // Add tile-layer (you can also get your own at mapbox.com)\r\n    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n\t\tattribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a>'\r\n\t}).addTo(mapView.getMap());\r\n}.bind(this));\r\n```\r\n\r\n## Documentation\r\n\r\nTo access the underlying map object, use MapView.getMap(). The Map-object\r\nis only safely accessible after the 'load' event, because the DOM-object must first be created and the map needs to load.\r\n\r\n```javascript\r\nmapView.on('load', function () {\r\n    var map = mapView.getMap();\r\n    ...\r\n});\r\n```\r\n\r\n##### LatLng notation\r\n\r\nMultiple LatLng formats are supported by the famous-map functions:\r\n\r\n```javascript\r\nvar pos = { lat: 57.876, lng: -13.242 }; // object literal\r\nvar pos = [57.876, -13.242]; // array: [lat, lng]\r\nvar pos = new google.maps.LatLng(57.876, -13.242); // object with .lat() and .lng() functions\r\n```\r\n\r\n##### Panning the map using transitions\r\n\r\nTo pan the map using famo.us transitions, use MapView.setPosition().\r\nTransitions are chained, so you can create paths that the map will follow.\r\n\r\n```javascript\r\nmapView.setPosition(\r\n    {lat: 51.4484855, lng: 5.451478},\r\n    {duration: 5000, curve: Easing.outBack},\r\n    function () {\r\n        mapView.getMap().setZoom(7)\r\n    }\r\n);\r\n```\r\n\r\n##### Linking a renderable to a geographical coordinate on the map\r\n\r\nTo place a renderable on the map like a marker, use MapModifier or MapStateModifier:\r\n\r\n```javascript\r\nvar MapModifier = require('famous-map/MapModifier');\r\n\r\nvar surface = new Surface({\r\n    size: [50, 50],\r\n    properties: {\r\n        backgroundColor: 'white'\r\n    }\r\n});\r\nvar modifier = new Modifier({\r\n    align: [0, 0],\r\n    origin: [0.5, 0.5]\r\n});\r\nvar mapModifier = new MapModifier({\r\n    mapView: mapView,\r\n    position: {lat: 51.4484855, lng: 5.451478}\r\n});\r\nthis.add(mapModifier).add(modifier).add(surface);\r\n```\r\n\r\n##### Moving a renderable across the map\r\n\r\nMapStateModifier relates to MapModifier in the same way StateModifier relates to Modifier. MapStateModifier makes it possible to change the position from one place to another, using a transitionable. Transitions are chained, so you can create paths that the renderable will follow:\r\n\r\n```javascript\r\nMapStateModifier = require('famous-map/MapStateModifier');\r\n\r\nvar surface = new Surface({\r\n    size: [50, 50],\r\n    properties: {\r\n        backgroundColor: 'white'\r\n    }\r\n});\r\nvar modifier = new Modifier({\r\n    align: [0, 0],\r\n    origin: [0.5, 0.5]\r\n});\r\nvar mapStateModifier = new MapStateModifier({\r\n    mapView: mapView,\r\n    position: {lat: 51.4484855, lng: 5.451478}\r\n});\r\nthis.add(mapStateModifier).add(modifier).add(surface);\r\n\r\n// Animate the renderable across the map\r\nmapStateModifier.setPosition(\r\n    {lat: 52.4484855, lng: 6.451478},\r\n    {method: 'map-speed', speed: 200} // 200 km/h\r\n);\r\nmapStateModifier.setPosition(\r\n    {lat: 50.4484855, lng: 3.451478},\r\n    {duration: 4000}\r\n);\r\n```\r\n\r\n##### Enable auto-scaling when the map is zoomed in or out\r\n\r\nTo enable auto-scaling set zoomBase to the zoom-level you wish the renderables to be displayed in its true size. In this example where zoomBase is set to 5, this would mean that at zoom-level 4 its size will 1/4 of its original size:\r\n\r\n```javascript\r\nvar mapModifier = new MapModifier({\r\n    mapView: mapView,\r\n    position: {lat: 51.4484855, lng: 5.451478},\r\n    zoomBase: 5\r\n});\r\n```\r\n\r\nTo use a different zooming strategy, use zoomScale. ZoomScale can be set to either a number or a getter function:\r\n\r\n```javascript\r\nvar mapModifier = new MapModifier({\r\n    mapView: mapView,\r\n    position: {lat: 51.4484855, lng: 5.451478},\r\n    zoomBase: 5,\r\n    zoomScale: 0.5\r\n});\r\n\r\nvar mapModifier = new MapModifier({\r\n    mapView: mapView,\r\n    position: {lat: 51.4484855, lng: 5.451478},\r\n    zoomBase: 5,\r\n    zoomScale: function (baseZoom, currentZoom) {\r\n        var zoom = currentZoom - baseZoom;\r\n        if (zoom < 0) {\r\n            return 1 / (2 * (Math.abs(zoom) + 1));\r\n        } else {\r\n            return 1 + (2 * zoom);\r\n        }\r\n    }\r\n});\r\n```\r\n\r\n##### API reference\r\n\r\n|Class|Description|\r\n|---|---|\r\n|[MapView](docs/MapView.md)|View class which encapsulates a maps object.|\r\n|[MapModifier](docs/MapModifier.md)|Stateless modifier which positions a renderable based on a geographical position {LatLng}.|\r\n|[MapStateModifier](docs/MapStateModifier.md)|Modifier which positions a renderable based on a geographical position {LatLng}, using transitions.|\r\n|[MapUtility](docs/MapUtility.md)|General purpose utility functions.\r\n|[MapTransition](docs/MapTransition.md)|Transition for moving at a certain speed over the map (km/h).\r\n|[MapPositionTransitionable](docs/MapPositionTransitionable.md)|Transitionable for geographical coordinates {LatLng}.\r\n\r\n## Known issues & performance\r\n\r\n##### Google-Maps and Drag/Pinch on mobile devices\r\n\r\nFamo.us prevents 'touchmove' events on mobile devices, which causes drag-to-move and pinch-to-zoom to break in Google Maps. This is a known issue in famo.us and should be addressed in the next release. To workaround this issue, out-comment the following lines 119 - 122 in Engine.js:\r\n\r\n```javascript\r\n// prevent scrolling via browser\r\n// window.addEventListener('touchmove', function(event) {\r\n// event.preventDefault();\r\n// }, true);\r\n```\r\n\r\n*Resources:*\r\n\r\n* [github](https://github.com/Famous/surfaces/issues/4#issuecomment-45357611)\r\n* [frankbolviken](http://blog.frankbolviken.com/2014/05/25/famous-google-maps/)\r\n\r\n##### Panning the map & smoothness\r\n\r\nPanning the map using MapView.setPosition() and a transition works great, but is not as smooth in all scenarios and on all devices. Panning is smoothest for smaller tile-distances. To see map panning in action at different speeds, view the [nyat-cat demo](https://rawgit.com/IjzerenHein/famous-map/master/examples/nyan-cat/index.html).\r\n\r\n##### Google-Maps and Zoom-levels < 3\r\n\r\nAt the lower zoom-levels, renderables may not be positioned correctly using Google Maps. This happens when the entire world fits more than once on the surface. In this case, the bounding east and west longitude cannot be determined through the google-maps API, which are required for calculating the x position. To workaround this issue, set `mapOptions.minZoom` to 3.\r\n\r\n##### Renderables lag and Leaflet\r\n\r\nThe leaflet-API returns the position and zoom-level **after** animations have occured. This causes a small lag in the position of renderables when panning the map. When zooming the map, the renderables are re-positioned after the zoom and smooth zooming is therefore not possible and disabled.\r\n\r\n## Contribute\r\n\r\nFeel free to contribute to this project in any way. The easiest way to support this project is by giving it a star.\r\n\r\n## Contact\r\n- \t@IjzerenHein\r\n- \thttp://www.gloey.nl\r\n- \thrutjes@gmail.com\r\n\r\n© 2014 - Hein Rutjes\r\n",
+  "gitHead": "3b3fdbd13c0df0ee8abf0c814e2dee453d70f2aa",
+  "_id": "famous-map@0.0.9",
+  "scripts": {},
+  "_shasum": "b8bd3f86a1cd48372c0660119e10faf0330fb735",
+  "_from": "famous-map"
+}

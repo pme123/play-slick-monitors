@@ -27,8 +27,7 @@ define(function (require, exports, module) {
     var MapPositionTransitionable = require('famous-map/MapPositionTransitionable');
     var MapTransition = require('famous-map/MapTransition');
 
-    var ClientPlayerView = ('views/ClientPlayerView');
-    var PlayerClientView = require('views/PlayerClientView');
+    var PlayerClient2View = require('views/PlayerClient2View');
 
     var mainContext = Engine.createContext();
     var mapView;
@@ -51,9 +50,9 @@ define(function (require, exports, module) {
             }
         });
         mainContext.add(mapView);
-        // PlayerClientView
+        // PlayerClient2View
 
-        playerClientView = new PlayerClientView();
+        playerClientView = new PlayerClient2View();
         mainContext.add(playerClientView);
     }
 
